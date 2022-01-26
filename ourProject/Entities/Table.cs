@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace ourProject.Models
+namespace Entities
 {
     public partial class Table
     {
@@ -17,9 +17,11 @@ namespace ourProject.Models
         public int NumChair { get; set; }
         public int EventId { get; set; }
         public int? GenderId { get; set; }
-
+        [JsonIgnore]
         public virtual Event Event { get; set; }
+        [JsonIgnore]
         public virtual Gender Gender { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Placement> Placements { get; set; }
     }
 }

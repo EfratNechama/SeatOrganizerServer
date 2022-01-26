@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
-namespace ourProject.Models
+namespace Entities
 {
     public partial class User
     {
@@ -16,7 +17,7 @@ namespace ourProject.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<Guest> Guests { get; set; }
     }
 }

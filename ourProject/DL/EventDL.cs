@@ -11,9 +11,9 @@ namespace DL
 {
    public class EventDL :IEventDL
     {
-        SeatOrgenizerContext _myDB;
+        SeatOrganizerContext _myDB;
         ILogger<EventDL> logger;
-        public EventDL(SeatOrgenizerContext SeatOrgenizerContext, ILogger<EventDL> logger)
+        public EventDL(SeatOrganizerContext SeatOrgenizerContext, ILogger<EventDL> logger)
         {
             _myDB = SeatOrgenizerContext;
             this.logger = logger;

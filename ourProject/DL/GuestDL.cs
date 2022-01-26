@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
+using ourProject.Models;
 //using ourProject.Models;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace DL
 {
     public class GuestDL :IGuestDL
     {
-        SeatOrgenizerContext _myDB;
-        public GuestDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public GuestDL(SeatOrganizerContext SeatOrgenizerContext)
         {
             _myDB = SeatOrgenizerContext;
         }
@@ -36,12 +37,9 @@ namespace DL
         public async Task PostDL(Guest g)
         {
             await _myDB.Guests.AddAsync(g);
-            //await _myDB.SaveChangesAsync();
-            try { await _myDB.SaveChangesAsync(); }
-            catch(Exception e)
-            {
-                var d = 5;
-            }
+            
+            await _myDB.SaveChangesAsync(); 
+            
             
         }
 

@@ -10,8 +10,8 @@ namespace DL
 {
    public  class UserDL: IUserDL
     {
-        SeatOrgenizerContext _myDB;
-        public UserDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public UserDL(SeatOrganizerContext SeatOrgenizerContext)
         {
            _myDB = SeatOrgenizerContext;
         }

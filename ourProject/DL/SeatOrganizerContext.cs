@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace ourProject.Models
+namespace DL
 {
     public partial class SeatOrganizerContext : DbContext
     {
