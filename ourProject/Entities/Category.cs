@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -16,9 +15,10 @@ namespace Entities
 
         public int Id { get; set; }
         public string Name { get; set; }
-        [JsonIgnore]
+        public int? EventId { get; set; }
+
+        public virtual Event Event { get; set; }
         public virtual ICollection<CategoryPerEvent> CategoryPerEvents { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Guest> Guests { get; set; }
     }
 }
