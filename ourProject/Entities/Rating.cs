@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 #nullable disable
+
 namespace Entities
 {
     public partial class Rating
