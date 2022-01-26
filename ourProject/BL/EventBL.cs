@@ -45,13 +45,13 @@ namespace BL
                 Table t = new Table(0, false, (int)(e.NumChairsFemale), e.Id,3);
                 await itabledl.PostDL(t);
             }
-            //why did we call it NumSpecialTableChairsMale?
-            for (int i = 0; i < e.NumSpecialTableChairsMale; i++)
-            {
+
+            if (e.NumSpecialTableChairsMale>0)
+            { 
                 Table t = new Table(0, true, (int)(e.NumSpecialTableChairsMale), e.Id,1);
                 await itabledl.PostDL(t);
             }
-            for (int i = 0; i < e.NumSpecialTableChairsFemale; i++)
+             if (e.NumSpecialTableChairsFemale>0)
             {
                 Table t = new Table(0, true, (int)(e.NumSpecialTableChairsFemale), e.Id,3);
                 await itabledl.PostDL(t);
