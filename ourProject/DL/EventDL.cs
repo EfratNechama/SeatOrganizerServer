@@ -14,21 +14,21 @@ namespace DL
     {
         SeatOrganizerContext _myDB;
         ILogger<EventDL> logger;
-        public EventDL(SeatOrganizerContext SeatOrgenizerContext, ILogger<EventDL> logger)
+        public EventDL(SeatOrganizerContext SeatOrganizerContext, ILogger<EventDL> logger)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
             this.logger = logger;
         }
 
         public async Task<List<Event>> getEventByUserIdDL(int id)
         {
-           // try
+            // try
             //{
-                List<Event> eventlist = await _myDB.Events.Where(e => e.UserAId.Equals(id) || e.UserBId.Equals(id)).ToListAsync();
-                return eventlist;
+            //List<Event> eventlist = await _myDB.Events.Where(e => e.UserAId.Equals(id) || e.UserBId.Equals(id)).ToListAsync();
+            //return eventlist;
             /*}
-            catch ( Exception ex){ logger.LogError(ex.Message); };
-            return null;*/
+            catch ( Exception ex){ logger.LogError(ex.Message); };*/
+            return null;
            
         }
 

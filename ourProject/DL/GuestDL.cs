@@ -1,6 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
-using ourProject.Models;
+
 //using ourProject.Models;
 using System;
 using System.Collections.Generic;
@@ -14,9 +14,9 @@ namespace DL
     public class GuestDL :IGuestDL
     {
         SeatOrganizerContext _myDB;
-        public GuestDL(SeatOrganizerContext SeatOrgenizerContext)
+        public GuestDL(SeatOrganizerContext SeatOrganizerContext)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
         }
 
         public async Task<List<Guest>> GetDL(int id)

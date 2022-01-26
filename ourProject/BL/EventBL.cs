@@ -14,15 +14,18 @@ namespace BL
     {
         IEventDL ieventdl;
         ITableDL itabledl;
+        IEventPerUserDL ieventperuserdl;
 
-        public EventBL(IEventDL ieventdl, ITableDL itabledl)
+        public EventBL(IEventDL ieventdl, ITableDL itabledl, IEventPerUserDL ieventperuserdl)
         {
             this.ieventdl = ieventdl;
             this.itabledl = itabledl;
+            this.ieventperuserdl = ieventperuserdl;
         }
         public async Task<List<Event>> getEventByUserIdBL(int id)
         {
-            return await ieventdl.getEventByUserIdDL(id);
+            return await ieventperuserdl.GetEventListByUserIdDL(id);
+            //return await ieventdl.getEventByUserIdDL(id);
         }
         public async Task<Event> getEventByEventIdBL(int id)
         {
@@ -52,7 +55,7 @@ namespace BL
             if (e.NumSpecialTableChairsMale>0)
             { 
                 Table t = new Table
-                { Id=0, IsSpecial=true, NumChair=(int)(e.NumSpecialTableChairsMale), EventIde.Id, GenderId=1 };
+                { Id=0, IsSpecial=true, NumChair=(int)(e.NumSpecialTableChairsMale), EventId=e.Id, GenderId=1 };
                 await itabledl.PostDL(t);
             }
              if (e.NumSpecialTableChairsFemale>0)

@@ -1,6 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
-using ourProject.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ namespace DL
   public   class EventPerUserDL: IEventPerUserDL
     {
         SeatOrganizerContext _myDB;
-        public EventPerUserDL(SeatOrganizerContext SeatOrgenizerContext)
+        public EventPerUserDL(SeatOrganizerContext SeatOrganizerContext)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
         }
 
         public async Task PostDL(EventPerUser epud)

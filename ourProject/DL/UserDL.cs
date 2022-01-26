@@ -11,9 +11,9 @@ namespace DL
    public  class UserDL: IUserDL
     {
         SeatOrganizerContext _myDB;
-        public UserDL(SeatOrganizerContext SeatOrgenizerContext)
+        public UserDL(SeatOrganizerContext SeatOrganizerContext)
         {
-           _myDB = SeatOrgenizerContext;
+           _myDB = SeatOrganizerContext;
         }
 
         public async Task PostDL(User user)

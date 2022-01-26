@@ -12,7 +12,7 @@ namespace ourProject
     {
         public AutoMapping()
         {
-            CreateMap<Event, EventDTO>().ForMember(dest => dest.userAName, opt => opt.MapFrom(src => src.UserA.UserName)).ReverseMap();
+            //CreateMap<Event, EventDTO>().ForMember(dest => dest.userAName, opt => opt.MapFrom(src => src.UserA.UserName)).ReverseMap();
             //.ForMember(dest => dest.userBName, opt => opt.MapFrom(src => src.UserB.UserName)).ReverseMap();
 
 

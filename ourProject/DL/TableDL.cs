@@ -13,9 +13,9 @@ namespace DL
     {
         SeatOrganizerContext _myDB;
        
-        public TableDL(SeatOrganizerContext SeatOrgenizerContext)
+        public TableDL(SeatOrganizerContext SeatOrganizerContext)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
             
         }
         public async Task PostDL(Table t)

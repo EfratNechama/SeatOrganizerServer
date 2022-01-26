@@ -17,7 +17,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using ourProject.Models;
+
 
 namespace ourProject//Hi Efrat! hope we'll have good luck in this project
     //Hi Nechame i hope to!
@@ -35,7 +35,7 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            object p = services.AddDbContext<SeatOrganizerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SeatOrgenizer")));
+            object p = services.AddDbContext<SeatOrganizerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SeatOrganizer")));
             services.AddScoped<IUserDL, UserDL>();
             services.AddScoped<IUserBL, UserBL>();
             services.AddScoped<IEventDL, EventDL>();

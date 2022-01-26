@@ -1,6 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
-using ourProject.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ namespace DL
    public class CategoryDL: ICategoryDL
     {
         SeatOrganizerContext _myDB;
-        public CategoryDL(SeatOrganizerContext SeatOrgenizerContext)
+        public CategoryDL(SeatOrganizerContext SeatOrganizerContext)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
         }
 
         //placement
