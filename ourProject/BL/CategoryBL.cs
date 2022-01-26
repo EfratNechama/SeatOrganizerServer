@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL//Hello for try git!
+namespace BL//Hello for try git!//
 {
    public class CategoryBL:ICategoryBL
     {
