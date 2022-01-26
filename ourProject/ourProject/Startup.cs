@@ -16,6 +16,7 @@ using DL;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace ourProject//Hi Efrat! hope we'll have good luck in this project
     //Hi Nechame i hope to!
@@ -47,9 +48,9 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
             services.AddScoped<ITableDL, TableDL>();
             services.AddScoped<IRatingDL, RatingDL>();
             services.AddScoped<IRatingBL, RatingBL>();
+
+            services.AddResponseCaching();
            
-
-
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
@@ -73,6 +74,19 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.Use(async (context, next) =>
+            {
+                context.Response.GetTypedHeaders().CacheControl =
+                    new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                    {
+                        Public = true,
+                        MaxAge = TimeSpan.FromSeconds(60)
+                    };
+                context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
+                    new string[] { "Accept-Encoding" };
+
+                await next();
+            });
             //
             app.Map("/api", app1 =>
             {
