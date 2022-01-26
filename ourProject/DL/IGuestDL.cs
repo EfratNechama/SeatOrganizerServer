@@ -8,7 +8,7 @@ namespace DL
     public interface IGuestDL
     {
         Task<List<Guest>> GetDL(int id);
-       // Task<List<Guest>> GetDLOrderByFamilySize(int id);
+        Task<List<Guest>> GetDLOrderByFamilySize(int id);
         Task PostDL(Guest g);
         Task PutDL(int id, Guest g);
 

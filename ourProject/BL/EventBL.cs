@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DL;
 using Entities;
 using Microsoft.EntityFrameworkCore.Metadata;
+//using ourProject.Models;
 
 namespace BL
 {
@@ -36,24 +37,28 @@ namespace BL
             //post table by the event details 
             for (int i = 0; i < e.NumTabelsMale; i++)
             {
-                Table t = new Table(0, false, (int)(e.NumChairsMale), e.Id,1);
+                Table t = new Table
+                {Id=0, IsSpecial=false, NumChair=(int)(e.NumChairsMale), EventId=e.Id, GenderId=1};
 
                 await itabledl.PostDL(t);
             }
             for (int i = 0; i < e.NumTablesFemale; i++)
             {
-                Table t = new Table(0, false, (int)(e.NumChairsFemale), e.Id,3);
+                Table t = new Table
+                { Id=0, IsSpecial=false, NumChair=(int)(e.NumChairsFemale), EventId=e.Id, GenderId=3 };
                 await itabledl.PostDL(t);
             }
 
             if (e.NumSpecialTableChairsMale>0)
             { 
-                Table t = new Table(0, true, (int)(e.NumSpecialTableChairsMale), e.Id,1);
+                Table t = new Table
+                { Id=0, IsSpecial=true, NumChair=(int)(e.NumSpecialTableChairsMale), EventIde.Id, GenderId=1 };
                 await itabledl.PostDL(t);
             }
              if (e.NumSpecialTableChairsFemale>0)
             {
-                Table t = new Table(0, true, (int)(e.NumSpecialTableChairsFemale), e.Id,3);
+                Table t = new Table
+                {Id=0, IsSpecial=true, NumChair=(int)(e.NumSpecialTableChairsFemale), EventId=e.Id, GenderId=3 };
                 await itabledl.PostDL(t);
             }
 

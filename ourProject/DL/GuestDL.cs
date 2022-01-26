@@ -12,8 +12,8 @@ namespace DL
 {
     public class GuestDL :IGuestDL
     {
-        SeatOrgenizerContext _myDB;
-        public GuestDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public GuestDL(SeatOrganizerContext SeatOrgenizerContext)
         {
             _myDB = SeatOrgenizerContext;
         }
@@ -25,13 +25,13 @@ namespace DL
         }
 
         //placement
-   /*     public async Task<List<Guest>> GetDLOrderByFamilySize(int id)
+        public async Task<List<Guest>> GetDLOrderByFamilySize(int id)
         {
             //יש לזכור לשנות את המיון לפי גודל המשפחה!!
-            List<Guest> g = await _myDB.Guests.OrderByDescending(g=>g.FirstName).Where(g => g.EventId == id).ToListAsync();
+            List<Guest> g = await _myDB.Guests.OrderByDescending(g => g.FirstName).Where(g => g.EventId == id).ToListAsync();
 
             return g;
-        }*/
+        }
 
         public async Task PostDL(Guest g)
         {

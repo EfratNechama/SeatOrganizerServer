@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
+//using ourProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace DL
 {
     public class TableDL : ITableDL
     {
-        SeatOrgenizerContext _myDB;
+        SeatOrganizerContext _myDB;
        
-        public TableDL(SeatOrgenizerContext SeatOrgenizerContext)
+        public TableDL(SeatOrganizerContext SeatOrgenizerContext)
         {
             _myDB = SeatOrgenizerContext;
             

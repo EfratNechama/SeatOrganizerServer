@@ -9,8 +9,8 @@ namespace DL
 {
     public class RatingDL: IRatingDL
     {
-        SeatOrgenizerContext _myDB;
-        public RatingDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public RatingDL(SeatOrganizerContext SeatOrgenizerContext)
         {
             _myDB = SeatOrgenizerContext;
         }

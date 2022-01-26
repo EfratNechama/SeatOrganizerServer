@@ -9,8 +9,8 @@ namespace DL
 {
     public class PlacementDL :IPlacementDL
     {
-        SeatOrgenizerContext _myDB;
-        public PlacementDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public PlacementDL(SeatOrganizerContext SeatOrgenizerContext)
         {
             _myDB = SeatOrgenizerContext;
         }
