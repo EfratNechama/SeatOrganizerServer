@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -25,10 +26,13 @@ namespace Entities
         public byte[] IdentifyImage { get; set; }
         public int? NumFamilyMembersMale { get; set; }
         public int? NumFamilyMembersFemale { get; set; }
-
+        [JsonIgnore]
         public virtual Category Category { get; set; }
+        [JsonIgnore]
         public virtual Event Event { get; set; }
+        [JsonIgnore]
         public virtual User User { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Placement> Placements { get; set; }
     }
 }

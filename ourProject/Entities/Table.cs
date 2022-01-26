@@ -17,9 +17,11 @@ namespace Entities
         public int NumChair { get; set; }
         public int EventId { get; set; }
         public int? GenderId { get; set; }
-
+        [JsonIgnore]
         public virtual Event Event { get; set; }
+        [JsonIgnore]
         public virtual Gender Gender { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Placement> Placements { get; set; }
     }
 }
