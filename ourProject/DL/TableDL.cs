@@ -28,11 +28,36 @@ namespace DL
         }
 
         //placement
-        public async Task<List<Table>> GetTabelByEventIdDL(int eventId)
+        public async Task<List<Table>> GetTabelByEventIdDL(int eventId, int gender, bool special)
             {
-            List<Table> listTabel= await _myDB.Tables.Where(t => t.EventId.Equals(eventId) ).ToListAsync();
+            List<Table> listTabel = new List<Table>();            
+            if (gender==1 && special==true)
+            {
+               return listTabel = await _myDB.Tables.Where(t => t.EventId.Equals(eventId)&& t.GenderId==1 && t.IsSpecial==true).ToListAsync();
+            }
+            if (gender == 1 )
+            {
+               return listTabel = await _myDB.Tables.Where(t => t.EventId.Equals(eventId) && t.GenderId == 1 && t.IsSpecial == false).ToListAsync();
+            }
+            if (gender == 3 && special == true)
+            {
+                return listTabel = await _myDB.Tables.Where(t => t.EventId.Equals(eventId) && t.GenderId == 3 && t.IsSpecial == true).ToListAsync();
+            }
+            if (gender == 3)
+            {
+              return  listTabel = await _myDB.Tables.Where(t => t.EventId.Equals(eventId) && t.GenderId == 3 && t.IsSpecial == false).ToListAsync();
+            }
+            if (gender == 2 && special == true)
+            {
+                return listTabel = await _myDB.Tables.Where(t => t.EventId.Equals(eventId) && t.GenderId == 2 && t.IsSpecial == true).ToListAsync();
+            }
+            if (gender == 2)
+            {
+                return listTabel = await _myDB.Tables.Where(t => t.EventId.Equals(eventId) && t.GenderId == 2 && t.IsSpecial == false).ToListAsync();
+            }
 
-            return listTabel;
+
+
 
         }
 

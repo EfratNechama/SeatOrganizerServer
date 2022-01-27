@@ -26,11 +26,22 @@ namespace DL
         }
 
         //placement
-        public async Task<List<Guest>> GetDLOrderByFamilySize(int id)
+        public async Task<List<Guest>> GetDLOrderByFamilySize(int id,int gender)
         {
-            //יש לזכור לשנות את המיון לפי גודל המשפחה!!
-            List<Guest> g = await _myDB.Guests.OrderByDescending(g => g.FirstName).Where(g => g.EventId == id).ToListAsync();
-
+            List<Guest> g=new List<Guest>();
+          //1=male 2=not seperated 3=female
+            if (gender==1)
+            { 
+             g = await _myDB.Guests.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.EventId == id).ToListAsync();
+            }
+            if (gender == 3)
+            {
+                g = await _myDB.Guests.OrderByDescending(g => g.NumFamilyMembersFemale).Where(g => g.EventId == id).ToListAsync();
+            }
+            if (gender == 2)
+            {
+                g = await _myDB.Guests.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.EventId == id).ToListAsync();
+            }
             return g;
         }
 
