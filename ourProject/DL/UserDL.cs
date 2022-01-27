@@ -45,9 +45,13 @@ namespace DL
             User userToUpdate = await _myDB.Users.FindAsync(id);
             if (userToUpdate == null)
             {
-                return;
+                await _myDB.Users.AddAsync(user);
             }
-            _myDB.Entry(userToUpdate).CurrentValues.SetValues(user);
+            else
+            {
+                _myDB.Entry(userToUpdate).CurrentValues.SetValues(user);
+            }
+            
             await _myDB.SaveChangesAsync();
         }
         public async Task DeleteDL(int id)

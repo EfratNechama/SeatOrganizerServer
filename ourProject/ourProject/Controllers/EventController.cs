@@ -50,10 +50,10 @@ namespace ourProject.Controllers
 
         // POST api/<EventController>
         [HttpPost]
-        public async Task Post([FromBody] Event e)
+        public async Task Post([FromBody] Event e, int userId)
         {
             //Event e = imapper.Map<EventDTO, Event>(edto);
-            await ieventbl.PostBL(e);
+            await ieventbl.PostBL(e , userId);
           
 
         }

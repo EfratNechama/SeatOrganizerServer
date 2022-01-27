@@ -31,11 +31,11 @@ namespace BL
         {
             return await ieventdl.getEventByEventIdDL(id);
         }
-        public async Task PostBL(Event e)
+        public async Task PostBL(Event e, int userId)
         {
             await ieventdl.PostDL(e);
 
-
+           
 
             //post table by the event details 
             for (int i = 0; i < e.NumTabelsMale; i++)
@@ -64,7 +64,13 @@ namespace BL
                 {Id=0, IsSpecial=true, NumChair=(int)(e.NumSpecialTableChairsFemale), EventId=e.Id, GenderId=3 };
                 await itabledl.PostDL(t);
             }
-
+            EventPerUser epu = new EventPerUser
+            {
+                Id = 0,
+                EventId = e.Id,
+                UserId = userId
+            };
+            await ieventperuserdl.PostDL(epu);
         }
         public async Task PutBL(int id,Event e)
         {
