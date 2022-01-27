@@ -32,20 +32,20 @@ namespace ourProject.Controllers
         }
         // GET: api/<EventController>
         [HttpGet("eventByEventId/{id}")]
-        public async Task<EventDTO> Get(int id )
+        public async Task<Event> Get(int id )
         {
             Event e = await ieventbl.getEventByEventIdBL(id);
-            EventDTO eDTO = imapper.Map<Event, EventDTO>(e);
-            return eDTO;
+            //EventDTO eDTO = imapper.Map<Event, EventDTO>(e);
+            return e;
         }
 
         // GET api/<EventController>/5
         [HttpGet("allEventsByUserId/{id}")]
-        public async Task<List<EventDTO>> GetEventsList(int id)
+        public async Task<List<Event>> GetEventsList(int id)
         {
             List<Event> eventList = await ieventbl.getEventByUserIdBL(id);
-            List<EventDTO> eventListDTO = imapper.Map<List<Event>, List<EventDTO>>(eventList);
-            return eventListDTO;
+            //List<EventDTO> eventListDTO = imapper.Map<List<Event>, List<EventDTO>>(eventList);
+            return eventList;
         }
 
         // POST api/<EventController>
@@ -61,7 +61,7 @@ namespace ourProject.Controllers
 
         // PUT api/<EventController>/5
         [HttpPut("{id}")]
-        public async void Put(int id, [FromBody] Event e)
+        public async Task Put(int id, [FromBody] Event e)
         {
             //Event e = imapper.Map<EventDTO, Event>(edto);
             

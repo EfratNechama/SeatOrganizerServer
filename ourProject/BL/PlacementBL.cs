@@ -52,7 +52,7 @@ namespace BL
             //לטפל בספיישל
             List<Guest> guestList = await iguestdl.GetDLOrderByFamilySize(eventId);
 
-        List<Table> tabelList = await itabeldl.GetTabelByEventId(eventId);
+        List<Table> tabelList = await itabeldl.GetTabelByEventIdDL(eventId);
 
         List<CategoryPerEvent> categoryList = await icategorydl.GetCategoryByEventId(eventId);
 

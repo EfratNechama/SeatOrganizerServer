@@ -28,12 +28,20 @@ namespace DL
         }
 
         //placement
-        public async Task<List<Table>> GetTabelByEventId(int eventId)
+        public async Task<List<Table>> GetTabelByEventIdDL(int eventId)
             {
             List<Table> listTabel= await _myDB.Tables.Where(t => t.EventId.Equals(eventId) ).ToListAsync();
 
             return listTabel;
 
+        }
+
+        public async Task DeleteTabelByEventIdDL(int eventId)
+        {
+            List<Table> tabelList = await _myDB.Tables.Where(t=>t.EventId==eventId).ToListAsync();
+            _myDB.Tables.RemoveRange(tabelList);
+            await _myDB.SaveChangesAsync();
+            
         }
 
 

@@ -49,19 +49,33 @@ namespace DL
         public async Task PutDL(int id,Event e)
         {
             Event eventToUpdate = await _myDB.Events.FindAsync(id);
+
             if (eventToUpdate == null)
             {
                 return;
             }
-            _myDB.Entry(eventToUpdate).CurrentValues.SetValues(e);
+            else
+            {
+                
+                _myDB.Entry(eventToUpdate).CurrentValues.SetValues(e);
+            }
+            
             await _myDB.SaveChangesAsync();
         }
 
         public async Task DeleteDL(int id)
         {
            Event e= await _myDB.Events.FindAsync(id);
-             _myDB.Events.Remove(e);
-            await _myDB.SaveChangesAsync();
+            try
+            {
+                _myDB.Events.Remove(e);
+                await _myDB.SaveChangesAsync();
+            }
+            catch(Exception a)
+            {
+                var w = 1;
+            }
+            
         }
 
     }

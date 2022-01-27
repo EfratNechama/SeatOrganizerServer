@@ -75,7 +75,11 @@ namespace BL
         public async Task PutBL(int id,Event e)
         {
             await ieventdl.PutDL(id,e);
+        
+
         }
+
+       
 
         public async Task DeleteBL(int id)
         {

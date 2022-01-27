@@ -9,6 +9,7 @@ namespace DL
     {
         Task PostDL(Table t);
 
-        Task<List<Table>> GetTabelByEventId(int eventId);
+        Task<List<Table>> GetTabelByEventIdDL(int eventId);
+        Task DeleteTabelByEventIdDL(int eventId);
     }
 }
