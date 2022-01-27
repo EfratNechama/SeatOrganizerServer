@@ -115,7 +115,7 @@ namespace DL
 
             modelBuilder.Entity<EventPerUser>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("EventPerUser");
 

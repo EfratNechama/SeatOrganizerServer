@@ -19,10 +19,15 @@ namespace DL
 
         public async Task PostDL(EventPerUser epud)
         {
-            await _myDB.EventPerUsers.AddAsync(epud);
-
-            await _myDB.SaveChangesAsync();
-
+            
+            try {
+                await _myDB.EventPerUsers.AddAsync(epud);
+                await _myDB.SaveChangesAsync();
+                } 
+            catch(Exception e)
+            {
+                var a = 2;
+            }
         }
 
         public async Task<List<Event>> GetEventListByUserIdDL(int userId )
