@@ -50,6 +50,7 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
             services.AddScoped<IRatingDL, RatingDL>();
             services.AddScoped<IRatingBL, RatingBL>();
             services.AddScoped<IEventPerUserDL, EventPerUserDL>();
+            services.AddScoped<IEventPerUserBL, EventPerUserBL>();
 
             services.AddResponseCaching();
            
