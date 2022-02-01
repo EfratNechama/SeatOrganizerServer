@@ -26,21 +26,21 @@ namespace DL
         }
 
         //placement
-        public async Task<List<Guest>> GetDLOrderByFamilySize(int id,int gender)
+        public async Task<List<Guest>> GetByGenderDL(int id,int gender)
         {
             List<Guest> g=new List<Guest>();
           //1=male 2=not seperated 3=female
             if (gender==1)
             { 
-             g = await _myDB.Guests.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.EventId == id).ToListAsync();
+                g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
             }
             if (gender == 3)
             {
-                g = await _myDB.Guests.OrderByDescending(g => g.NumFamilyMembersFemale).Where(g => g.EventId == id).ToListAsync();
+                g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
             }
             if (gender == 2)
             {
-                g = await _myDB.Guests.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.EventId == id).ToListAsync();
+                g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
             }
             return g;
         }

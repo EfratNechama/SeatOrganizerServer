@@ -11,7 +11,7 @@ namespace BL
 {
 
    public class PlacementBL: IPlacementBL
-    {
+   {
         IPlacementDL iplacementdl;
         IGuestDL iguestdl;
         ITableDL itabeldl;
@@ -46,29 +46,38 @@ namespace BL
 
             //BS"D!!!!!
             //אלגוריתם שיבוץ בסיסי
-            public async Task place(Event e)
-        
+        public async Task place(Event e)
         {
             //לטפל בספיישל
             //לדאוג להסרת השולחנות שהגיעו לתפוסה מלאה (0מקומות זמינים)
 
             //ארוע מופרד
+           if (e.SeperatedSeats == true)
+           {
 
-            
-
-            if (e.SeperatedSeats == true)
-            {
-
-            }
+           }
             //ארוע מעורב
             else            
             {
-                List<Guest> guestList = await iguestdl.GetDLOrderByFamilySize(e.Id, 2);
+                List<Guest> allGuestsList = await iguestdl.GetByGenderDL(e.Id, 2);
+                List<Guest> specialGuestList = allGuestsList.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.Category.Name.Equals("special")).ToList();
+                List<Guest> guestList = allGuestsList.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.Category.Name!="special").ToList();
                 List<Table> tabelList = await itabeldl.GetTabelByEventIdDL(e.Id,2,false);
                 List<CategoryPerEvent> categoryList = await icategorydl.GetCategoryByEventId(e.Id);
                 List<match> matchList = new List<match>();
-                int i = 0;
+
+                //special
+                List<Table> spicalTabelList = await itabeldl.GetTabelByEventIdDL(e.Id, 2, true);
+                //לא נכון .COUNT כי צריך לספור את מספר חברי המשפחה (איך להגביל?) לתקן
+                if (specialGuestList.Count <= spicalTabelList[0].NumChair)
+                {
+
+                }
+                else
+                    throw new Exception("too many spical pepole!");
+
                 //התאמת שולחנות לקטגוריות לצורך אתחול 
+                int i = 0;
                 while (i < tabelList.Count && i < categoryList.Count)
                 {
                     //after update the db we must change this
@@ -89,153 +98,140 @@ namespace BL
                     {
                         //בגרסה זאת מיינו את השולחנות הפנויים לפי כמות הכסאות הפנויים בסדר יורד
                         List<match> filterCategoryList = matchList.OrderByDescending(m => m.availableChairs).Where(m => m.categoryId == guestList[j].CategoryId).ToList();
-                        if (filterCategoryList.Any())
+                       //האם יש בכלל שולחנות לקטגוריה וגם באחד מהם יש מספיק מקום לכל המשפחה
+                        if (filterCategoryList.Any() && filterCategoryList.First().availableChairs >= guestList[j].NumFamilyMembersMale)
                         {
-                            if (filterCategoryList.First().availableChairs >= guestList[j].NumFamilyMembersMale)
+                            // שיבוץ ללא שארית
+                            int tableId = filterCategoryList.First().t.Id;
+                            Placement p = new Placement
+                            { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
+                            await iplacementdl.postDL(p);
+                            //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
+                            for (int a = 0; a < matchList.Count; a++)
                             {
-                                int tableId = filterCategoryList.First().t.Id;
-                                // ללא שארית שיבוץ
+                                if (matchList[a].t.Id == tableId)
+                                    matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
+                            }
+                            //סוף שיבוץ
+                        }
+                        //אין מקום לכולם בקטגוריה ☹ בדיקה אם יש שוחנות פנויים להקצות לקטגוריה
+                        else if (availableTableList.Any())
+                        {
+                            Table t1 = availableTableList[0];
+                            availableTableList.RemoveAt(0);
+                            matchList.Add(new match(t1, guestList[j].CategoryId, t1.NumChair));
+                            if (guestList[j].NumFamilyMembersMale <= t1.NumChair)
+                            {
+                                //שיבוץ ללא שארית. כולם נכנסים בשולחן
                                 Placement p = new Placement
-                                { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
+                                { Id = 0, TableId = t1.Id, GuestId = guestList[j].Id };
                                 await iplacementdl.postDL(p);
                                 //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
                                 for (int a = 0; a < matchList.Count; a++)
                                 {
-                                    if (matchList[a].t.Id == tableId)
-                                        matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
+                                    if (matchList[a].t.Id == t1.Id)
+                                       matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
                                 }
-                                //end
-
+                                //סוף שיבוץ
                             }
+                            //המשפחה מדי גדולה, ולא נכנסת אפילו לשולחן החדש הפנוי. נאלץ לפצל
                             else
                             {
-                            //יש שולחנות ריקים
-                            go_to_have_empty_tables:
-                                if (availableTableList.Any())
+                                //שיבוץ עם שארית
+                                Placement p = new Placement
+                                { Id = 0, TableId = t1.Id, GuestId = guestList[j].Id };
+                                await iplacementdl.postDL(p);
+                                //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
+                                for (int a = 0; a < matchList.Count; a++)
                                 {
-                                    Table t1 = availableTableList[0];
-                                    availableTableList.RemoveAt(0);
-                                    matchList.Add(new match(t1, guestList[j].CategoryId, t1.NumChair));
-                                    if (guestList[j].NumFamilyMembersMale <= t1.NumChair)
-                                    {
-                                        //שיבוץ
-                                        Placement p = new Placement
-                                        { Id = 0, TableId = t1.Id, GuestId = guestList[j].Id };
-                                        await iplacementdl.postDL(p);
-                                        //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
-                                        for (int a = 0; a < matchList.Count; a++)
-                                        {
-                                            if (matchList[a].t.Id == t1.Id)
-                                                matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
-                                        }
-                                        //end
-
-                                    }
-                                    else
-                                    {
-                                        //שיבוץ עם שארית
-                                        Placement p = new Placement
-                                        { Id = 0, TableId = t1.Id, GuestId = guestList[j].Id };
-                                        await iplacementdl.postDL(p);
-                                        //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
-                                        for (int a = 0; a < matchList.Count; a++)
-                                        {
-                                            if (matchList[a].t.Id == t1.Id)
-                                                matchList[a].availableChairs = 0;
-                                        }
-                                        // לברר האם זה מעתיק כתובת או ערך
-                                        Guest g1 = guestList[j];
-                                        g1.NumFamilyMembersMale = guestList[j].NumFamilyMembersMale - t1.NumChair;
-                                        // יש לברר האם הלולאה תתעדכן ותרוץ גם על האיבר הנוסף
-                                        guestList.Add(g1);
-
-
-                                    }
-
+                                    if (matchList[a].t.Id == t1.Id)
+                                        matchList[a].availableChairs = 0;
                                 }
-                                //אין שולחנות רייקים
-                                else
-                                {
-                                    //האם יש בכלל מקום כלשהו פנוי בקטגוריה הרצויה
-                                    if (filterCategoryList.First().availableChairs > 0)
-                                    {
-                                        int tableId = filterCategoryList.First().t.Id;
-                                        Placement p = new Placement
-                                        { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
-                                        await iplacementdl.postDL(p);
-                                        // לברר האם זה מעתיק כתובת או ערך
-                                        Guest g1 = guestList[j];
-                                        g1.NumFamilyMembersMale = guestList[j].NumFamilyMembersMale - filterCategoryList.First().availableChairs;
-                                        // יש לברר האם הלולאה תתעדכן ותרוץ גם על האיבר הנוסף
-                                        guestList.Add(g1);
-                                        //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
-                                        for (int a = 0; a < matchList.Count; a++)
-                                        {
-                                            if (matchList[a].t.Id == tableId)
-                                                matchList[a].availableChairs = 0;
-                                        }
-
-                                    }
-                                    //אם אין בכלל מקום בשולחנות הקטגוריה וגם אין שולחן ריק לפתיחה מוכרחים לשבץ בשולחן השייך לקטגוריה אחרת 
-                                    else
-                                    {
-                                        List<match> orderTableByAvailableChairsList = matchList.OrderByDescending(m => m.availableChairs).ToList();
-                                        int tableId = orderTableByAvailableChairsList.First().t.Id;
-
-                                        if (orderTableByAvailableChairsList.First().availableChairs >= guestList[j].NumFamilyMembersMale)
-                                        {
-
-                                            //שיבוץ
-                                            Placement p = new Placement
-                                            { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
-                                            await iplacementdl.postDL(p);
-                                            //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
-                                            for (int a = 0; a < matchList.Count; a++)
-                                            {
-                                                if (matchList[a].t.Id == tableId)
-                                                    matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
-                                            }
-                                            //end
-
-                                        }
-                                        else
-                                        {
-                                            //שיבוץ עם שארית
-                                            Placement p = new Placement
-                                            { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
-                                            await iplacementdl.postDL(p);
-                                            // לברר האם זה מעתיק כתובת או ערך
-                                            Guest g1 = guestList[j];
-                                            g1.NumFamilyMembersMale = guestList[j].NumFamilyMembersMale - orderTableByAvailableChairsList.First().availableChairs;
-                                            // יש לברר האם הלולאה תתעדכן ותרוץ גם על האיבר הנוסף
-                                            guestList.Add(g1);
-                                            //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
-                                            for (int a = 0; a < matchList.Count; a++)
-                                            {
-                                                if (matchList[a].t.Id == tableId)
-                                                    matchList[a].availableChairs = 0;
-                                            }
-
-
-                                        }
-                                    }
-
-                                }
-
+                                // לברר האם זה מעתיק כתובת או ערך
+                                Guest g1 = guestList[j];
+                                g1.NumFamilyMembersMale = guestList[j].NumFamilyMembersMale - t1.NumChair;
+                                // יש לברר האם הלולאה תתעדכן ותרוץ גם על האיבר הנוסף
+                                guestList.Add(g1);
                             }
 
-
                         }
+                        //מה לעשות? אין שולחנות ריקים להקצות:( נאלץ לפצל את המשפחה
                         else
                         {
-                            goto go_to_have_empty_tables;
+                            //האם יש בכלל מקומות כלשהם פנויים בקטגוריה הרצויה
+                            if (filterCategoryList.First().availableChairs > 0)//אם בראשון אין ק"ו שאין בכל השאר
+                            {
+                                //שיבוץ עם שארית. הרי ברור שאין מקום לכולם בשולחן זה
+                                int tableId = filterCategoryList.First().t.Id;
+                                Placement p = new Placement
+                                { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
+                                await iplacementdl.postDL(p);
+                                // לברר האם זה מעתיק כתובת או ערך
+                                Guest g1 = guestList[j];
+                                g1.NumFamilyMembersMale = guestList[j].NumFamilyMembersMale - filterCategoryList.First().availableChairs;
+                                // יש לברר האם הלולאה תתעדכן ותרוץ גם על האיבר הנוסף
+                                guestList.Add(g1);
+                                //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
+                                for (int a = 0; a < matchList.Count; a++)
+                                {
+                                    if (matchList[a].t.Id == tableId)
+                                        matchList[a].availableChairs = 0;
+                                }
+                                //סוף שיבוץ
+                            }
+                            //אם אין בכלל מקום בשולחנות הקטגוריה וגם אין שולחן ריק לפתיחה מוכרחים לשבץ בשולחן השייך לקטגוריה אחרת 
+                            else
+                            {
+                                List<match> orderTableByAvailableChairsList = matchList.OrderByDescending(m => m.availableChairs).ToList();
+                                int tableId = orderTableByAvailableChairsList.First().t.Id;
+                                //אם יש מקום לכולם בשולחן אחד (של קטגוריה זרה כמובן) אז שיבוץ
+                                if (orderTableByAvailableChairsList.First().availableChairs >= guestList[j].NumFamilyMembersMale)
+                                {
+                                    //שיבוץ
+                                    Placement p = new Placement
+                                    { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
+                                    await iplacementdl.postDL(p);
+                                    //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
+                                    for (int a = 0; a < matchList.Count; a++)
+                                    {
+                                        if (matchList[a].t.Id == tableId)
+                                            matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
+                                    }
+                                    //סוף שיבוץ
+                                }
+                                else
+                                {
+                                    //שיבוץ עם שארית
+                                    Placement p = new Placement
+                                    { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
+                                    await iplacementdl.postDL(p);
+                                    // לברר האם זה מעתיק כתובת או ערך
+                                    Guest g1 = guestList[j];
+                                    g1.NumFamilyMembersMale = guestList[j].NumFamilyMembersMale - orderTableByAvailableChairsList.First().availableChairs;
+                                    // יש לברר האם הלולאה תתעדכן ותרוץ גם על האיבר הנוסף
+                                    guestList.Add(g1);
+                                    //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
+                                    for (int a = 0; a < matchList.Count; a++)
+                                    {
+                                        if (matchList[a].t.Id == tableId)
+                                            matchList[a].availableChairs = 0;
+                                    }
+                                }
+                            }
+
                         }
+
                     }
+
+
                 }
-
-
-
+                       
             }
+        }
+
+
+
+   }
             //            List<Guest> guestListMale = await iguestdl.GetDLOrderByFamilySize(e.Id,1);
             //            List<Guest> guestListFemale = await iguestdl.GetDLOrderByFamilySize(e.Id, 3);
             //            List<Table> tabelList= await itabeldl.GetTabelByEventIdDL(e.Id);
@@ -312,8 +308,8 @@ namespace BL
 
             //    }
             //}
-        }
-
-
-  }
 }
+
+
+  
+

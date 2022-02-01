@@ -56,7 +56,7 @@ namespace DL
                 return listTabel = await _myDB.Tables.Where(t => t.EventId.Equals(eventId) && t.GenderId == 2 && t.IsSpecial == false).ToListAsync();
             }
 
-
+            return null;
 
 
         }
