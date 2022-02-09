@@ -17,7 +17,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-
+using System.Text;
 
 namespace ourProject//Hi Efrat! hope we'll have good luck in this project
     //Hi Nechame i hope to!
@@ -35,6 +35,24 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("key").Value);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
             object p = services.AddDbContext<SeatOrganizerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SeatOrganizer")));
             services.AddScoped<IUserDL, UserDL>();
             services.AddScoped<IUserBL, UserBL>();
@@ -59,6 +77,32 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ourProject", Version = "v1" });
+                // To Enable authorization using Swagger (JWT)    
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
+
             });
         }
 
@@ -94,6 +138,7 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
             app.Map("/api", app1 =>
             {
                 app1.UseRouting();
+                
                 app1.UseExceptionMiddleware();
                 app1.UseRatingMiddleware();
                 app1.UseAuthorization();
@@ -103,8 +148,8 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
                     endpoints.MapControllers();
                 });
             });
-           app.UseAuthorization();
 
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
