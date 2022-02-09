@@ -107,11 +107,12 @@ namespace BL
                             { Id = 0, TableId = tableId, GuestId = guestList[j].Id };
                             await iplacementdl.postDL(p);
                             //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
-                            for (int a = 0; a < matchList.Count; a++)
-                            {
-                                if (matchList[a].t.Id == tableId)
-                                    matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
-                            }
+                            filterCategoryList.First().availableChairs -= (int)guestList[j].NumFamilyMembersMale;
+                            //for (int a = 0; a < matchList.Count; a++)
+                            //{
+                            //    if (matchList[a].t.Id == tableId)
+                            //        matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
+                            //}
                             //סוף שיבוץ
                         }
                         //אין מקום לכולם בקטגוריה ☹ בדיקה אם יש שוחנות פנויים להקצות לקטגוריה
@@ -120,6 +121,7 @@ namespace BL
                             Table t1 = availableTableList[0];
                             availableTableList.RemoveAt(0);
                             matchList.Add(new match(t1, guestList[j].CategoryId, t1.NumChair));
+                            //יש מספיק מקומות בשולחן החדש
                             if (guestList[j].NumFamilyMembersMale <= t1.NumChair)
                             {
                                 //שיבוץ ללא שארית. כולם נכנסים בשולחן
@@ -127,11 +129,12 @@ namespace BL
                                 { Id = 0, TableId = t1.Id, GuestId = guestList[j].Id };
                                 await iplacementdl.postDL(p);
                                 //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
-                                for (int a = 0; a < matchList.Count; a++)
-                                {
-                                    if (matchList[a].t.Id == t1.Id)
-                                       matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
-                                }
+                                matchList.Find(u => u.t.Id == t1.Id).availableChairs -= (int)guestList[j].NumFamilyMembersMale;
+                                //for (int a = 0; a < matchList.Count; a++)
+                                //{
+                                //    if (matchList[a].t.Id == t1.Id)
+                                //       matchList[a].availableChairs = matchList[a].availableChairs - (int)guestList[j].NumFamilyMembersMale;
+                                //}
                                 //סוף שיבוץ
                             }
                             //המשפחה מדי גדולה, ולא נכנסת אפילו לשולחן החדש הפנוי. נאלץ לפצל
@@ -148,6 +151,7 @@ namespace BL
                                         matchList[a].availableChairs = 0;
                                 }
                                 // לברר האם זה מעתיק כתובת או ערך
+                                //ליצור אוביקט חדש ולהוסיף לרשימה*********************
                                 Guest g1 = guestList[j];
                                 g1.NumFamilyMembersMale = guestList[j].NumFamilyMembersMale - t1.NumChair;
                                 // יש לברר האם הלולאה תתעדכן ותרוץ גם על האיבר הנוסף
