@@ -9,10 +9,10 @@ namespace DL
 {
     public class RatingDL: IRatingDL
     {
-        SeatOrgenizerContext _myDB;
-        public RatingDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public RatingDL(SeatOrganizerContext SeatOrganizerContext)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
         }
         public async Task postDL(Rating r)
         {

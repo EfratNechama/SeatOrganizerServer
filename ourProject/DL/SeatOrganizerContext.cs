@@ -3,18 +3,17 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-
 #nullable disable
 
 namespace DL
 {
-    public partial class SeatOrgenizerContext : DbContext
+    public partial class SeatOrganizerContext : DbContext
     {
-        public SeatOrgenizerContext()
+        public SeatOrganizerContext()
         {
         }
 
-        public SeatOrgenizerContext(DbContextOptions<SeatOrgenizerContext> options)
+        public SeatOrganizerContext(DbContextOptions<SeatOrganizerContext> options)
             : base(options)
         {
         }
@@ -22,6 +21,7 @@ namespace DL
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryPerEvent> CategoryPerEvents { get; set; }
         public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<EventPerUser> EventPerUsers { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<Guest> Guests { get; set; }
         public virtual DbSet<Placement> Placements { get; set; }
@@ -35,13 +35,13 @@ namespace DL
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=srv2\\PUPILS;Database=SeatOrgenizer;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-7SLGQOB;Database=SeatOrganizer;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Hebrew_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AS");
 
             modelBuilder.Entity<Category>(entity =>
             {
@@ -49,10 +49,17 @@ namespace DL
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.EventId).HasColumnName("event_id");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("name");
+
+                entity.HasOne(d => d.Event)
+                    .WithMany(p => p.Categories)
+                    .HasForeignKey(d => d.EventId)
+                    .HasConstraintName("FK_Category_Event");
             });
 
             modelBuilder.Entity<CategoryPerEvent>(entity =>
@@ -87,6 +94,10 @@ namespace DL
                     .HasColumnType("date")
                     .HasColumnName("date_to_send_email");
 
+                entity.Property(e => e.InvitationImage)
+                    .HasColumnType("image")
+                    .HasColumnName("invitation_image");
+
                 entity.Property(e => e.NumChairsFemale).HasColumnName("num_chairs_female");
 
                 entity.Property(e => e.NumChairsMale).HasColumnName("num_chairs_male");
@@ -100,21 +111,33 @@ namespace DL
                 entity.Property(e => e.NumTablesFemale).HasColumnName("num_tables_female");
 
                 entity.Property(e => e.SeperatedSeats).HasColumnName("seperated_seats");
+            });
 
-                entity.Property(e => e.UserAId).HasColumnName("userA_id");
+            modelBuilder.Entity<EventPerUser>(entity =>
+            {
+                //entity.HasNoKey();
 
-                entity.Property(e => e.UserBId).HasColumnName("userB_id");
+                entity.ToTable("EventPerUser");
 
-                entity.HasOne(d => d.UserA)
-                    .WithMany(p => p.EventUserAs)
-                    .HasForeignKey(d => d.UserAId)
+                entity.Property(e => e.EventId).HasColumnName("event_id");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Event)
+                    .WithMany()
+                    .HasForeignKey(d => d.EventId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Event_User");
+                    .HasConstraintName("FK_EventPerUser_Event");
 
-                entity.HasOne(d => d.UserB)
-                    .WithMany(p => p.EventUserBs)
-                    .HasForeignKey(d => d.UserBId)
-                    .HasConstraintName("FK_Event_User1");
+                entity.HasOne(d => d.User)
+                    .WithMany()
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EventPerUser_User");
             });
 
             modelBuilder.Entity<Gender>(entity =>
@@ -139,9 +162,9 @@ namespace DL
                 entity.Property(e => e.Confirmed).HasColumnName("confirmed");
 
                 entity.Property(e => e.Email)
+                    .IsRequired()
                     .HasMaxLength(100)
-                    .HasColumnName("email")
-                    .IsFixedLength(true);
+                    .HasColumnName("email");
 
                 entity.Property(e => e.EventId).HasColumnName("event_id");
 
@@ -149,8 +172,6 @@ namespace DL
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("firstName");
-
-                entity.Property(e => e.GenderId).HasColumnName("gender_id");
 
                 entity.Property(e => e.IdentifyImage)
                     .HasColumnType("image")
@@ -165,7 +186,9 @@ namespace DL
                     .HasMaxLength(50)
                     .HasColumnName("lastName");
 
-                entity.Property(e => e.NumFamilyMembers).HasColumnName("num_family_members");
+                entity.Property(e => e.NumFamilyMembersFemale).HasColumnName("num_family_members_female");
+
+                entity.Property(e => e.NumFamilyMembersMale).HasColumnName("num_family_members_male");
 
                 entity.Property(e => e.Phone)
                     .HasMaxLength(10)
@@ -185,12 +208,6 @@ namespace DL
                     .HasForeignKey(d => d.EventId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Guest_Event");
-
-                entity.HasOne(d => d.Gender)
-                    .WithMany(p => p.Guests)
-                    .HasForeignKey(d => d.GenderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Guest_Gender");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Guests)
@@ -302,13 +319,18 @@ namespace DL
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(500)
                     .HasColumnName("password");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
+
+                entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasColumnName("salt");
             });
 
             OnModelCreatingPartial(modelBuilder);

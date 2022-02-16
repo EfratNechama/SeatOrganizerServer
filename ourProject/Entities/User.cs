@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 #nullable disable
@@ -11,8 +12,6 @@ namespace Entities
     {
         public User()
         {
-            EventUserAs = new HashSet<Event>();
-            EventUserBs = new HashSet<Event>();
             Guests = new HashSet<Guest>();
         }
 
@@ -22,12 +21,14 @@ namespace Entities
         [Required]
         public string Password { get; set; }
         [EmailAddress]
+        [Required]
         public string Email { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Event> EventUserAs { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<Event> EventUserBs { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Guest> Guests { get; set; }
+        [NotMapped]
+        [JsonIgnore]
+        public string Token { get; set; }
+        [JsonIgnore]
+        public string Salt { get; set; }
     }
 }

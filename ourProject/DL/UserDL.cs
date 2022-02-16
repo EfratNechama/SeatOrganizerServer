@@ -10,10 +10,10 @@ namespace DL
 {
    public  class UserDL: IUserDL
     {
-        SeatOrgenizerContext _myDB;
-        public UserDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public UserDL(SeatOrganizerContext SeatOrganizerContext)
         {
-           _myDB = SeatOrgenizerContext;
+           _myDB = SeatOrganizerContext;
         }
 
         public async Task PostDL(User user)
@@ -45,9 +45,13 @@ namespace DL
             User userToUpdate = await _myDB.Users.FindAsync(id);
             if (userToUpdate == null)
             {
-                return;
+                await _myDB.Users.AddAsync(user);
             }
-            _myDB.Entry(userToUpdate).CurrentValues.SetValues(user);
+            else
+            {
+                _myDB.Entry(userToUpdate).CurrentValues.SetValues(user);
+            }
+            
             await _myDB.SaveChangesAsync();
         }
         public async Task DeleteDL(int id)

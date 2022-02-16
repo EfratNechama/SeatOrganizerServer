@@ -9,10 +9,10 @@ namespace DL
 {
     public class PlacementDL :IPlacementDL
     {
-        SeatOrgenizerContext _myDB;
-        public PlacementDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public PlacementDL(SeatOrganizerContext SeatOrganizerContext)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
         }
 
         public async Task postDL(Placement p)

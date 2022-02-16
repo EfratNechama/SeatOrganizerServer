@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using BL;
 using Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ourProject.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -34,6 +36,7 @@ namespace ourProject.Controllers
 
         //// GET api/<UserController>/5
         [HttpGet("{email}/{password}")]
+        [AllowAnonymous]
         public async Task<User> Get(string email, string password)
         {
            
@@ -47,6 +50,7 @@ namespace ourProject.Controllers
 
         // POST api/<UserController>
         [HttpPost]
+        [AllowAnonymous]
         public async Task Post([FromBody] User user)
         {
             await iuserbl.PostBL(user);
@@ -57,6 +61,7 @@ namespace ourProject.Controllers
 
         //// PUT api/<UserController>/5
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task Put(int id,[FromBody] User user)
         {
             await iuserbl.PutBL(id, user);
@@ -65,6 +70,7 @@ namespace ourProject.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public async Task Delete(int id)
         {
             await iuserbl.DeleteBL(id);

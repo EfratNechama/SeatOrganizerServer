@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,17 @@ namespace DL
 {
    public class CategoryDL: ICategoryDL
     {
-        SeatOrgenizerContext _myDB;
-        public CategoryDL(SeatOrgenizerContext SeatOrgenizerContext)
+        SeatOrganizerContext _myDB;
+        public CategoryDL(SeatOrganizerContext SeatOrganizerContext)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
         }
 
         //placement
         //לאחר שינוי הקטגוריה בדיבי יש לשים לב להתאים את סוג הליסט וסוג הפרמטר לשליפה
         public async Task<List<CategoryPerEvent>> GetCategoryByEventId(int eventId)
         {
-            List<CategoryPerEvent> listCategory = await _myDB.CategoryPerEvents.Where(c => c.EventId.Equals(eventId)).ToListAsync();
+            List<CategoryPerEvent> listCategory = await _myDB.CategoryPerEvents.Where(c => c.EventId==(eventId)).ToListAsync();
 
             return listCategory;
         }

@@ -6,28 +6,33 @@ using System.Threading.Tasks;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using DTO;
+//using ourProject.Models;
 
 namespace DL
 {
    public class EventDL :IEventDL
     {
-        SeatOrgenizerContext _myDB;
+        SeatOrganizerContext _myDB;
         ILogger<EventDL> logger;
-        public EventDL(SeatOrgenizerContext SeatOrgenizerContext, ILogger<EventDL> logger)
+        public EventDL(SeatOrganizerContext SeatOrganizerContext, ILogger<EventDL> logger)
         {
-            _myDB = SeatOrgenizerContext;
+            _myDB = SeatOrganizerContext;
             this.logger = logger;
         }
 
-        public async Task<List<Event>> getEventByUserIdDL(int id)
+        public async Task<List<EventPerUser>> getEventByUserIdDL(int id)
         {
-           // try
-            //{
-                List<Event> eventlist = await _myDB.Events.Where(e => e.UserAId.Equals(id) || e.UserBId.Equals(id)).ToListAsync();
+            try
+            {
+                List<EventPerUser> eventlist = await _myDB.EventPerUsers.Where(u => u.UserId == id).ToListAsync();
+
                 return eventlist;
-            /*}
-            catch ( Exception ex){ logger.LogError(ex.Message); };
-            return null;*/
+            }
+
+
+            catch (Exception ex) { logger.LogError(ex.Message); };
+            return null;
            
         }
 
@@ -48,20 +53,39 @@ namespace DL
         public async Task PutDL(int id,Event e)
         {
             Event eventToUpdate = await _myDB.Events.FindAsync(id);
+
             if (eventToUpdate == null)
             {
                 return;
             }
-            _myDB.Entry(eventToUpdate).CurrentValues.SetValues(e);
+            else
+            {
+                
+                _myDB.Entry(eventToUpdate).CurrentValues.SetValues(e);
+            }
+            
             await _myDB.SaveChangesAsync();
         }
 
         public async Task DeleteDL(int id)
         {
            Event e= await _myDB.Events.FindAsync(id);
-             _myDB.Events.Remove(e);
-            await _myDB.SaveChangesAsync();
+            try
+            {
+                
+                List<EventPerUser> l = await _myDB.EventPerUsers.Where(y => y.EventId == id).ToListAsync();
+                _myDB.EventPerUsers.RemoveRange(l);
+                _myDB.Events.Remove(e);
+                await _myDB.SaveChangesAsync();
+            }
+            catch(Exception a)
+            {
+                var w = 1;
+            }
+            
         }
 
     }
+
+
 }
