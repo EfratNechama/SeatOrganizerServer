@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using DTO;
 //using ourProject.Models;
 
 namespace DL
@@ -20,14 +21,15 @@ namespace DL
             this.logger = logger;
         }
 
-        public async Task<List<Event>> getEventByUserIdDL(int id)
+        public async Task<List<EventPerUser>> getEventByUserIdDL(int id)
         {
-            // try
-            //{
-            //List<Event> eventlist = await _myDB.Events.Where(e => e.UserAId.Equals(id) || e.UserBId.Equals(id)).ToListAsync();
-            //return eventlist;
-            /*}
-            catch ( Exception ex){ logger.LogError(ex.Message); };*/
+            try
+            {
+                List<EventPerUser> eventlist = await _myDB.EventPerUsers.Where(u => u.UserId == id).ToListAsync();
+
+                return eventlist;
+            }
+            catch (Exception ex) { logger.LogError(ex.Message); };
             return null;
            
         }

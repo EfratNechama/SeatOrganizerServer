@@ -18,6 +18,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ourProject//Hi Efrat! hope we'll have good luck in this project
     //Hi Nechame i hope to!

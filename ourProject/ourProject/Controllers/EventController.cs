@@ -22,40 +22,35 @@ namespace ourProject.Controllers
          IEventBL ieventbl;
          IMapper imapper;
 
-      /*  public IMapper Imapper { get => imapper; set => imapper = value; }*/
-
         public EventController(IEventBL Ieventbl, IMapper imapper)
         {
            
             ieventbl = Ieventbl;
             this.imapper = imapper;
         }
+        
         // GET: api/<EventController>
         [HttpGet("eventByEventId/{id}")]
         public async Task<Event> Get(int id )
         {
             Event e = await ieventbl.getEventByEventIdBL(id);
-            //EventDTO eDTO = imapper.Map<Event, EventDTO>(e);
             return e;
         }
 
         // GET api/<EventController>/5
         [HttpGet("allEventsByUserId/{id}")]
-        public async Task<List<Event>> GetEventsList(int id)
+        public async Task<List<EventPerUserDTO>> GetEventsList(int id)
         {
-            List<Event> eventList = await ieventbl.getEventByUserIdBL(id);
-            //List<EventDTO> eventListDTO = imapper.Map<List<Event>, List<EventDTO>>(eventList);
-            return eventList;
+            List<EventPerUser> eventList = await ieventbl.getEventByUserIdBL(id);
+            List<EventPerUserDTO> eventListDTO= imapper.Map<List<EventPerUser>, List<EventPerUserDTO>>(eventList);
+           return eventListDTO;
         }
 
         // POST api/<EventController>
         [HttpPost]
         public async Task Post([FromBody] Event e, int userId)
-        {
-            //Event e = imapper.Map<EventDTO, Event>(edto);
+        { 
             await ieventbl.PostBL(e , userId);
-          
-
         }
 
 
@@ -63,7 +58,6 @@ namespace ourProject.Controllers
         [HttpPut("{id}")]
         public async Task Put(int id, [FromBody] Event e)
         {
-            //Event e = imapper.Map<EventDTO, Event>(edto);
             
             await ieventbl.PutBL(id, e);
 
@@ -71,7 +65,7 @@ namespace ourProject.Controllers
 
         // DELETE api/<EventController>/5
         [HttpDelete("{id}")]
-        public async Task DeleteAsync(int id)
+        public async Task Delete(int id)
         {
             await ieventbl.DeleteBL(id);
         }
