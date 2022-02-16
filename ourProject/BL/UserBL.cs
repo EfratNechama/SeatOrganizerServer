@@ -17,15 +17,18 @@ namespace BL
     {
         IUserDL iuserdl;
         IConfiguration iconfiguration;
-
-        public UserBL(IUserDL iuserdl, IConfiguration iconfiguration)
+        IPasswordHashHelper ipasswordHashHelper;
+        public UserBL(IUserDL iuserdl, IConfiguration iconfiguration, IPasswordHashHelper ipasswordHashHelper)
         {
             this.iuserdl = iuserdl;
             this.iconfiguration = iconfiguration;
+            this.ipasswordHashHelper = ipasswordHashHelper;
         }
 
         public async Task PostBL(User user)
         {
+            user.Salt = ipasswordHashHelper.GenerateSalt(8);
+            user.Password = ipasswordHashHelper.HashPassword(user.Password, user.Salt, 1000, 8);
             await iuserdl.PostDL(user);
         }
         public static List<User> WithoutPasswords(List<User> users)

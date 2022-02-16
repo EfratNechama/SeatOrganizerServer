@@ -26,6 +26,9 @@ namespace Entities
         [JsonIgnore]
         public virtual ICollection<Guest> Guests { get; set; }
         [NotMapped]
+
         public string Token { get; set; }
+        [JsonIgnore]
+        public string Salt { get; set; }
     }
 }

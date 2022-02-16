@@ -319,13 +319,18 @@ namespace DL
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(500)
                     .HasColumnName("password");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
+
+                entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasColumnName("salt");
             });
 
             OnModelCreatingPartial(modelBuilder);

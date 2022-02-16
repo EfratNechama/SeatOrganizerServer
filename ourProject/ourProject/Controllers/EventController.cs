@@ -30,7 +30,7 @@ namespace ourProject.Controllers
         }
         
         // GET: api/<EventController>
-        [HttpGet("eventByEventId/{id}")]
+        [HttpGet("{id}")]
         public async Task<Event> Get(int id )
         {
             Event e = await ieventbl.getEventByEventIdBL(id);
@@ -38,13 +38,15 @@ namespace ourProject.Controllers
         }
 
         // GET api/<EventController>/5
-        [HttpGet("allEventsByUserId/{id}")]
+        [HttpGet("User/{id}")]
         public async Task<List<EventPerUserDTO>> GetEventsList(int id)
         {
             List<EventPerUser> eventList = await ieventbl.getEventByUserIdBL(id);
             List<EventPerUserDTO> eventListDTO= imapper.Map<List<EventPerUser>, List<EventPerUserDTO>>(eventList);
            return eventListDTO;
         }
+
+        
 
         // POST api/<EventController>
         [HttpPost]

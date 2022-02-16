@@ -36,7 +36,7 @@ namespace ourProject.Controllers
 
         //// GET api/<UserController>/5
         [HttpGet("{email}/{password}")]
-
+        [AllowAnonymous]
         public async Task<User> Get(string email, string password)
         {
            
@@ -61,6 +61,7 @@ namespace ourProject.Controllers
 
         //// PUT api/<UserController>/5
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task Put(int id,[FromBody] User user)
         {
             await iuserbl.PutBL(id, user);

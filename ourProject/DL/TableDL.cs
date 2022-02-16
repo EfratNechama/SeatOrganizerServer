@@ -18,11 +18,11 @@ namespace DL
             _myDB = SeatOrganizerContext;
             
         }
-        public async Task PostDL(Table t)
+        public async Task PostDL(Table[] t)
         {   if(t!=null)
-            { 
-            
-            await _myDB.Tables.AddAsync(t); 
+            {
+
+            await _myDB.Tables.AddRangeAsync(t); 
             await _myDB.SaveChangesAsync();
             }
         }
@@ -66,8 +66,11 @@ namespace DL
             List<Table> tabelList = await _myDB.Tables.Where(t=>t.EventId==eventId).ToListAsync();
             _myDB.Tables.RemoveRange(tabelList);
             await _myDB.SaveChangesAsync();
-            
+
+
         }
+
+        //delete with cascade EF
 
 
     }

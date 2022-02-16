@@ -29,6 +29,8 @@ namespace DL
 
                 return eventlist;
             }
+
+
             catch (Exception ex) { logger.LogError(ex.Message); };
             return null;
            
@@ -70,6 +72,9 @@ namespace DL
            Event e= await _myDB.Events.FindAsync(id);
             try
             {
+                
+                List<EventPerUser> l = await _myDB.EventPerUsers.Where(y => y.EventId == id).ToListAsync();
+                _myDB.EventPerUsers.RemoveRange(l);
                 _myDB.Events.Remove(e);
                 await _myDB.SaveChangesAsync();
             }
@@ -81,4 +86,6 @@ namespace DL
         }
 
     }
+
+
 }
