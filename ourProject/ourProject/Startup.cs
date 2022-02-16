@@ -115,7 +115,7 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
             logger.LogInformation("the server is up");
             if (env.IsDevelopment())
             {
-
+                app.UseExceptionMiddleware();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ourProject v1"));
@@ -142,7 +142,7 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
             {
                 app1.UseRouting();
                 
-                app1.UseExceptionMiddleware();
+                //app1.UseExceptionMiddleware();
                 app1.UseRatingMiddleware();
                 app1.UseAuthorization();
 
