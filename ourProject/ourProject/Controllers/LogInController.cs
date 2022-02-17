@@ -38,16 +38,21 @@ namespace ourProject.Controllers
         //}
 
         // POST api/<LogIn>
+        public static User WithoutPassword(User user)
+        {
+            user.Password = null;
+            return user;
+        }
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<User>> Post([FromBody] LoginUserDTO user)
         {
-          User u = await iuserbl.GetByPassAndEmailBL(user.Email, user.Password);
+          User u = await iuserbl.GetByPassAndEmailBL(user.Email);
 
             if (u == null)
                 return NoContent();
             else
-                return Ok(u);
+                return Ok(WithoutPassword(u));
         }
 
 

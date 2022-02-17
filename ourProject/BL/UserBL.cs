@@ -40,9 +40,9 @@ namespace BL
             user.Password = null;
             return user;
         }
-        public async Task<User> GetByPassAndEmailBL(string email, string password)
+        public async Task<User> GetByPassAndEmailBL(string email)
         {
-            User user= await iuserdl.GetByPassAndEmailDL(email, password);
+            User user= await iuserdl.GetByPassAndEmailDL(email);
             if (user==null)
             {
                 return null;
@@ -61,11 +61,13 @@ namespace BL
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-            return WithoutPassword(user);
+            return user;
         }
 
         public async Task PutBL(int id, User user)
         {
+            user.Salt = ipasswordHashHelper.GenerateSalt(8);
+            user.Password = ipasswordHashHelper.HashPassword(user.Password, user.Salt, 1000, 8);
             await iuserdl.PutDL(id, user);
         }
         public async Task DeleteBL(int id)

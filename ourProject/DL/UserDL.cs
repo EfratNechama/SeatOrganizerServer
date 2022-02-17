@@ -22,10 +22,10 @@ namespace DL
             await _myDB.SaveChangesAsync();
         }
 
-        public async Task<User> GetByPassAndEmailDL(string email, string password)
+        public async Task<User> GetByPassAndEmailDL(string email)
         {
 
-            User u = await _myDB.Users.Where(u => u.Password.Equals(password) && u.Email.Equals(email)).FirstOrDefaultAsync();
+            User u = await _myDB.Users.Where(u =>  u.Email.Equals(email)).FirstOrDefaultAsync();
             if (u != null)
             {
                 return u;
@@ -45,6 +45,7 @@ namespace DL
             User userToUpdate = await _myDB.Users.FindAsync(id);
             if (userToUpdate == null)
             {
+
                 await _myDB.Users.AddAsync(user);
             }
             else

@@ -19,29 +19,33 @@ namespace ourProject.Controllers
     {
         
         public IUserBL iuserbl;
-        
+        public IPasswordHashHelper ipasswordHashHelper;
 
-        public UserController(IUserBL Iuserbl, IMapper imapper)
+        public UserController(IUserBL Iuserbl, IMapper imapper, IPasswordHashHelper ipasswordHashHelper)
         {
             iuserbl = Iuserbl;
-           
+            this.ipasswordHashHelper = ipasswordHashHelper;
         }
 
-        //// GET: api/<UserController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
+       
         //// GET api/<UserController>/5
+        public static User WithoutPassword(User user)
+        {
+            user.Password = null;
+            return user;
+        }
+
         [HttpGet("{email}/{password}")]
         [AllowAnonymous]
         public async Task<User> Get(string email, string password)
         {
            
-            User u=    await iuserbl.GetByPassAndEmailBL(email, password);
-            return u;
+            User u=    await iuserbl.GetByPassAndEmailBL(email);
+            string Hashedpassword = ipasswordHashHelper.HashPassword(password, u.Salt, 1000, 8);
+            if (Hashedpassword.Equals(u.Password.TrimEnd()))
+                return WithoutPassword(u);
+            else
+                return null;
 
 
         }

@@ -327,7 +327,7 @@ namespace DL
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
 
-                entity.Property(e => e.Password)
+                entity.Property(e => e.Salt)
                 .IsRequired()
                 .HasMaxLength(500)
                 .HasColumnName("salt");

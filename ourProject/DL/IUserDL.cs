@@ -8,7 +8,7 @@ namespace DL
     {
         Task PostDL(User user);
         Task PutDL(int id,User user);
-        Task<User> GetByPassAndEmailDL(string email, string password);
+        Task<User> GetByPassAndEmailDL(string email);
         Task DeleteDL(int id);
 
 
