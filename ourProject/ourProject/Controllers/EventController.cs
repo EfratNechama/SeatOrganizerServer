@@ -39,11 +39,11 @@ namespace ourProject.Controllers
 
         // GET api/<EventController>/5
         [HttpGet("User/{id}")]
-        public async Task<List<EventPerUserDTO>> GetEventsList(int id)
+        public async Task<List<Event>> GetEventsList(int id)
         {
-            List<EventPerUser> eventList = await ieventbl.getEventByUserIdBL(id);
-            List<EventPerUserDTO> eventListDTO= imapper.Map<List<EventPerUser>, List<EventPerUserDTO>>(eventList);
-           return eventListDTO;
+            List<Event> eventList = await ieventbl.getEventByUserIdBL(id);
+           
+           return eventList;
         }
 
         

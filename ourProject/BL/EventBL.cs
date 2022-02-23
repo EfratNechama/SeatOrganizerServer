@@ -22,7 +22,7 @@ namespace BL
             this.itabledl = itabledl;
             this.ieventperuserdl = ieventperuserdl;
         }
-        public async Task<List<EventPerUser>> getEventByUserIdBL(int id)
+        public async Task<List<Event>> getEventByUserIdBL(int id)
         {
            
             return await ieventdl.getEventByUserIdDL(id);

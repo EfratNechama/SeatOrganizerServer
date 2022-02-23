@@ -7,7 +7,7 @@ namespace DL
    public interface IEventDL
     {
 
-         Task<List<EventPerUser>> getEventByUserIdDL(int id);
+         Task<List<Event>> getEventByUserIdDL(int id);
         Task PostDL(Event e);
         Task<Event> getEventByEventIdDL(int id);
         Task PutDL(int id, Event e);

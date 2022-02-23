@@ -21,12 +21,15 @@ namespace DL
             this.logger = logger;
         }
 
-        public async Task<List<EventPerUser>> getEventByUserIdDL(int id)
+        public async Task<List<Event>> getEventByUserIdDL(int id)
         {
+
+
             try
             {
-                List<EventPerUser> eventlist = await _myDB.EventPerUsers.Where(u => u.UserId == id).ToListAsync();
-
+                //List<Event> e = await _myDB.EventPerUsers.Include("EventPerUser.EventId").Where(u => u.UserId == id).ToListAsync();
+                //List<Event> eventlist = await _myDB.EventPerUsers.Where(u => u.UserId == id).Include(e => e.EventId).ToListAsync();
+                List<Event> eventlist = await _myDB.EventPerUsers.Include(e => e.Event).Where(u => u.UserId == id).Select(e => e.Event).ToListAsync();
                 return eventlist;
             }
 
