@@ -18,6 +18,6 @@ namespace DTO
         public int NumSpecialTableChairsMale { get; set; }
         public int? NumSpecialTableChairsFemale { get; set; }
         public byte[] InvitationImage { get; set; }
-        public DateTime? DateToSendEmail { get; set; }
+        public DateTime? EventDate { get; set; }
     }
 }

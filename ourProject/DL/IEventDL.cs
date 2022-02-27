@@ -8,7 +8,7 @@ namespace DL
     {
 
          Task<List<Event>> getEventByUserIdDL(int id);
-        Task PostDL(Event e);
+        Task<int> PostDL(Event e);
         Task<Event> getEventByEventIdDL(int id);
         Task PutDL(int id, Event e);
         Task DeleteDL(int id);

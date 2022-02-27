@@ -28,8 +28,14 @@ namespace DL
 
         public async Task<List<Category>> GetAllCategoryDL()
         {
-            List<Category> c = await _myDB.Categories.ToListAsync();
+            List<Category> c = await _myDB.Categories.Where(e=>e.EventId==null).ToListAsync();
             return c;
+        }
+
+        public async Task PostDL(Category[] c)
+        {
+            await _myDB.Categories.AddRangeAsync(c);
+            await _myDB.SaveChangesAsync();
         }
     }
 }

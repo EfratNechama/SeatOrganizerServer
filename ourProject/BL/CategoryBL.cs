@@ -15,9 +15,15 @@ namespace BL//Hello for try git!//
         {
             this.icategorydl = icategorydl;
         }
- public async Task<List<Category>> GetAllCategoryBL()
+ 
+        public async Task<List<Category>> GetAllCategoryBL()
         {
             return await icategorydl.GetAllCategoryDL();
+        }
+
+        public async Task PostBL(Category[] c)
+        {
+            await icategorydl.PostDL(c);
         }
     }
 }

@@ -8,5 +8,6 @@ namespace DL
     {
         Task<List<CategoryPerEvent>> GetCategoryByEventId(int eventId);
         Task<List<Category>> GetAllCategoryDL();
+        Task PostDL(Category[] c);
     }
 }

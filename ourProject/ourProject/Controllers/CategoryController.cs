@@ -30,6 +30,16 @@ namespace ourProject.Controllers
             return await icategorybl.GetAllCategoryBL();
         }
 
+
+        // POST api/<CategoryController>
+        [HttpPost]
         
+        public async Task Post([FromBody] Category[] c)
+        {
+            await icategorybl.PostBL(c);
+
+        }
+
+
     }
 }

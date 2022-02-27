@@ -31,9 +31,9 @@ namespace BL
         {
             return await ieventdl.getEventByEventIdDL(id);
         }
-        public async Task PostBL(Event e, int userId)
+        public async Task<int> PostBL(Event e, int userId)
         {
-            await ieventdl.PostDL(e);
+            int id=await ieventdl.PostDL(e);
 
             Table[] tblArr = new Table[e.NumTabelsMale+e.NumTablesFemale+2];
             int ind = 0;
@@ -72,6 +72,7 @@ namespace BL
                 UserId = userId
             };
             await ieventperuserdl.PostDL(epu);
+            return id;
         }
         public async Task PutBL(int id,Event e)
         {

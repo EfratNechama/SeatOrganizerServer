@@ -90,9 +90,9 @@ namespace DL
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.DateToSendEmail)
+                entity.Property(e => e.EventDate)
                     .HasColumnType("date")
-                    .HasColumnName("date_to_send_email");
+                    .HasColumnName("event_date");
 
                 entity.Property(e => e.InvitationImage)
                     .HasColumnType("image")

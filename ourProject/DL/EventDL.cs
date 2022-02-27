@@ -47,10 +47,11 @@ namespace DL
                 return e;
              }
 
-        public async Task PostDL(Event e)
+        public async Task<int> PostDL(Event e)
         {
             await _myDB.Events.AddAsync(e);
             await _myDB.SaveChangesAsync();
+            return e.Id;
         }
         
         public async Task PutDL(int id,Event e)

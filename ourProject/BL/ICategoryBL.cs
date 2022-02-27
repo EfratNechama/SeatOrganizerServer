@@ -7,5 +7,7 @@ namespace BL
     public interface ICategoryBL
     {
         Task<List<Category>> GetAllCategoryBL();
+
+        Task PostBL(Category[] c);
     }
 }
