@@ -130,7 +130,7 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
                     new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
                     {
                         Public = true,
-                        MaxAge = TimeSpan.FromSeconds(60)
+                        MaxAge = TimeSpan.FromSeconds(0.00001)
                     };
                 context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
                     new string[] { "Accept-Encoding" };

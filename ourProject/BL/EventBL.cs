@@ -34,35 +34,35 @@ namespace BL
         public async Task<int> PostBL(Event e, int userId)
         {
             int id=await ieventdl.PostDL(e);
-
-            Table[] tblArr = new Table[e.NumTabelsMale+e.NumTablesFemale+2];
-            int ind = 0;
+            List<Table> tblArr = new List<Table>();
+            //Table[] tblArr = new Table[(int)(e.NumTabelsMale+e.NumTablesFemale+2)];
+            //int ind = 0;
             //post table by the event details 
             for (int i = 0; i < e.NumTabelsMale; i++)
             {
                 Table t = new Table
                 {Id=0, IsSpecial=false, NumChair=(int)(e.NumChairsMale), EventId=e.Id, GenderId=1};
-                tblArr[ind++] = t;
+                tblArr.Add(t);
                // await itabledl.PostDL(t);
             }
             for (int i = 0; i < e.NumTablesFemale; i++)
             {
                 Table t = new Table
                 { Id=0, IsSpecial=false, NumChair=(int)(e.NumChairsFemale), EventId=e.Id, GenderId=3 };
-                tblArr[ind++] = t;
+                tblArr.Add(t);
             }
 
             if (e.NumSpecialTableChairsMale>0)
             { 
                 Table t = new Table
                 { Id=0, IsSpecial=true, NumChair=(int)(e.NumSpecialTableChairsMale), EventId=e.Id, GenderId=1 };
-                tblArr[ind++] = t;
+                tblArr.Add(t);
             }
              if (e.NumSpecialTableChairsFemale>0)
             {
                 Table t = new Table
                 {Id=0, IsSpecial=true, NumChair=(int)(e.NumSpecialTableChairsFemale), EventId=e.Id, GenderId=3 };
-                tblArr[ind++] = t;
+                tblArr.Add(t);
             }
             await itabledl.PostDL(tblArr);
             EventPerUser epu = new EventPerUser

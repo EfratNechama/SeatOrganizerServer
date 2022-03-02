@@ -11,8 +11,11 @@ namespace BL
         Task PostBL(Guest g);
         Task PutBL(int id, Guest g);
         Task DeleteBL(int id);
-        Task sendEmailBL(int eventId);
-        
+        Task sendEmailByEventIdBL(int eventId);
+       
+        Task sendEmailByGuestId(Guest g);
+
+
 
     }
 }

@@ -69,7 +69,7 @@ namespace BL
 
         //smtpPort = "587"
 
-        public async Task sendEmailBL(int eventId)
+        public async Task sendEmailByEventIdBL(int eventId)
         {
 
             List<Guest> guestList = await iguestdl.GetDL(eventId);
@@ -78,16 +78,16 @@ namespace BL
                 MailMessage message = new MailMessage();
                 message.From = new MailAddress("324861285@mby.co.il");
                 message.To.Add(new MailAddress(guestList[i].Email));
-                message.Attachments.Add(new Attachment("M:\\q.jpg"));
+               //////// message.Attachments.Add(new Attachment("M:\\q.jpg"));
                 string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
-                string link = "<a href= https://localhost:44369/swagger/index.html > enter to match  </a>";
+                //string link = "<a href= https://localhost:44369/swagger/index.html > enter to match  </a>";
                 message.Subject = "Hello "+ guestList[i].FirstName;
-                message.Attachments.Add(new Attachment("M:\\q.jpg"));
-               
-                message.Body = mailbody+ link;
+                // message.Attachments.Add(new Attachment("M:\\q.jpg"));
+
+                message.Body = mailbody;// + link;
                 message.BodyEncoding = Encoding.UTF8;
                 message.IsBodyHtml = true;
-                SmtpClient client = new SmtpClient("smtp.live.com", 587); //Gmail smtp    
+                SmtpClient client = new SmtpClient("smtp.office365.com", 587); //Gmail smtp    
                 System.Net.NetworkCredential basicCredential1 = new
                 System.Net.NetworkCredential("324861285@mby.co.il", "Student@264");
                 client.EnableSsl = true;
@@ -109,12 +109,51 @@ namespace BL
 
 
         }
+        public async Task sendEmailByGuestId(Guest g)
+        {
 
-     
+            
+            
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress("neproject2@gmail.com");
+                message.To.Add(new MailAddress("efrat48347@gmail.com"));
+                //message.Attachments.Add(new Attachment("M:\\q.jpg"));
+                string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
+            //  string link = "<a href= https://localhost:44369/swagger/index.html > enter to match  </a>";
+            message.Subject = "Hello ";//+ g.FirstName;
+            //message.Attachments.Add(new Attachment("M:\\q.jpg"));
 
-        
+            message.Body = mailbody;
+                //+ link;
+                message.BodyEncoding = Encoding.UTF8;
+                message.IsBodyHtml = true;
+                SmtpClient client = new SmtpClient("smtp.office365.com", 587); //Gmail smtp    
+                System.Net.NetworkCredential basicCredential1 = new
+                System.Net.NetworkCredential("neproject2@gmail.com", "35363536");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = basicCredential1;
 
 
-}
-}
+                try
+                {
+                    client.Send(message);
+                }
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+
+
+        }
+
+
+
+
+
+
+    }
 

@@ -24,25 +24,29 @@ namespace ourProject.Controllers
             this.imapper = imapper;
         }
        // GET: api/<EventController>
-        [HttpGet("{EventId}")]
-        public async Task<List<Guest>> Get(int EventId)
+        //[HttpGet("{EventId}")]
+        //public async Task<List<Guest>> Get(int EventId)
+        //{
+        //    return await iguestbl.GetBL(EventId);
+        //}
+        //GET: api/<EventController>
+        [HttpGet("{eventId}")]
+        public async Task Get(int eventId)
         {
-            return await iguestbl.GetBL(EventId);
+            await iguestbl.sendEmailByEventIdBL(eventId);
         }
-        // GET: api/<EventController>
-        /*        [HttpGet("{eventId}")]
-                public  async Task Get(int eventId)
-                {
-                  await  iguestbl.sendEmailBL(eventId);
-                }*/
 
 
         // POST api/<EventController>
-        [HttpPost]
-        public async Task Post([FromBody] Guest g)
+        [HttpPost("{ifSend}")]
+        public async Task Post(bool ifSend,[FromBody] Guest g)
         {
 
             await iguestbl.PostBL(g);
+            if(ifSend)
+            {
+                await iguestbl.sendEmailByGuestId(g);
+            }
 
         }
 

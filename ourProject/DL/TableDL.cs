@@ -18,7 +18,7 @@ namespace DL
             _myDB = SeatOrganizerContext;
             
         }
-        public async Task PostDL(Table[] t)
+        public async Task PostDL(List<Table> t)
         {   if(t!=null)
             {
 

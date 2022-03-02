@@ -19,10 +19,10 @@ namespace Entities
         public int Id { get; set; }
         public bool SeperatedSeats { get; set; }
         public int NumTabelsMale { get; set; }
-        public int NumTablesFemale { get; set; }
-        public int? NumChairsMale { get; set; }
+        public int? NumTablesFemale { get; set; }
+        public int NumChairsMale { get; set; }
         public int? NumChairsFemale { get; set; }
-        public int NumSpecialTableChairsMale { get; set; }
+        public int? NumSpecialTableChairsMale { get; set; }
         public int? NumSpecialTableChairsFemale { get; set; }
         public byte[] InvitationImage { get; set; }
         public DateTime? EventDate { get; set; }

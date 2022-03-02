@@ -49,8 +49,9 @@ namespace ourProject.Controllers
         
 
         // POST api/<EventController>
-        [HttpPost]
-        public async Task<int> Post( int userId, [FromBody] Event e)
+        [HttpPost()]
+        [Route("{userId}")]
+        public async Task<int> Post( int userId , [FromBody] Event e)
         { 
             return await ieventbl.PostBL(e , userId);
         }
