@@ -38,7 +38,7 @@ namespace ourProject.Controllers
 
 
         // POST api/<EventController>
-        [HttpPost("{sendEmail?}")]
+        [HttpPost("{sendEmail}")]
         public async Task Post(bool sendEmail, [FromBody] Guest g)
         {
 
