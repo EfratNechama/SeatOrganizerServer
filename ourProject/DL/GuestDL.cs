@@ -29,7 +29,7 @@ namespace DL
         public async Task<List<Guest>> GetByGenderDL(int id,int gender)
         {
             List<Guest> g=new List<Guest>();
-          //1=male 2=not seperated 3=female
+          //1=male 2=not separated 3=female
             if (gender==1)
             { 
                 g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();

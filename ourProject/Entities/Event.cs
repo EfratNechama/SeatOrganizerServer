@@ -17,7 +17,7 @@ namespace Entities
         }
 
         public int Id { get; set; }
-        public bool SeperatedSeats { get; set; }
+        public bool SeparatedSeats { get; set; }
         public int NumTabelsMale { get; set; }
         public int? NumTablesFemale { get; set; }
         public int NumChairsMale { get; set; }

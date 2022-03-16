@@ -50,7 +50,7 @@ namespace BL
             //לדאוג להסרת השולחנות שהגיעו לתפוסה מלאה (0מקומות זמינים)
 
             //ארוע מופרד
-            if (e.SeperatedSeats == true)
+            if (e.SeparatedSeats == true)
             {
 
             }
