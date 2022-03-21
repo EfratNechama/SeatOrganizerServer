@@ -110,7 +110,7 @@ namespace DL
 
                 entity.Property(e => e.NumTablesFemale).HasColumnName("num_tables_female");
 
-                entity.Property(e => e.SeperatedSeats).HasColumnName("seperated_seats");
+                entity.Property(e => e.SeparatedSeats).HasColumnName("separated_seats");
             });
 
             modelBuilder.Entity<EventPerUser>(entity =>
