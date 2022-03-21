@@ -48,10 +48,15 @@ namespace DL
         public async Task PostDL(Guest g)
         {
             await _myDB.Guests.AddAsync(g);
-            
-            await _myDB.SaveChangesAsync(); 
-            
-            
+
+            try 
+            { await _myDB.SaveChangesAsync(); }
+            catch (Exception e)
+            {
+                var d = 5;
+            }
+
+
         }
 
         public async Task PutDL(int id, Guest g)
