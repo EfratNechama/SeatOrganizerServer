@@ -12,7 +12,7 @@ namespace BL
     {
         IPlacementDL iplacementdl;
         IGuestDL iguestdl;
-        ITableDL itabeldl;
+        ITableDL itabledl;
 
         ICategoryDL icategorydl;
 
@@ -60,7 +60,7 @@ namespace BL
                 List<Guest> allGuestsList = await iguestdl.GetByGenderDL(e.Id, 2);
                 List<Guest> specialGuestList = allGuestsList.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.Category.Name.Equals("special")).ToList();
                 List<Guest> guestList = allGuestsList.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.Category.Name != "special").ToList();
-                List<Table> tabelList = await itabeldl.GetTabelByEventIdDL(e.Id, 2, false);
+                List<Table> tableList = await itabledl.GetTableByEventIdDL(e.Id, 2, false);
                 List<CategoryPerEvent> categoryList = await icategorydl.GetCategoryByEventId(e.Id);
                 List<match> matchList = new List<match>();
 
@@ -88,9 +88,9 @@ namespace BL
 
 
                 //special
-                List<Table> spicalTabelList = await itabeldl.GetTabelByEventIdDL(e.Id, 2, true);
+                List<Table> spicalTableList = await itabledl.GetTableByEventIdDL(e.Id, 2, true);
                 //לא נכון .COUNT כי צריך לספור את מספר חברי המשפחה (איך להגביל?) לתקן
-                if (specialGuestList.Count <= spicalTabelList[0].NumChair)
+                if (specialGuestList.Count <= spicalTableList[0].NumChair)
                 {
 
                 }
@@ -99,18 +99,18 @@ namespace BL
 
                 //התאמת שולחנות לקטגוריות לצורך אתחול 
                 int i = 0;
-                while (i < tabelList.Count && i < categoryList.Count)
+                while (i < tableList.Count && i < categoryList.Count)
                 {
                     //after update the db we must change this
 
-                    matchList.Add(new match(tabelList[i], (int)categoryList[i].CategoryId, (int)tabelList[i].NumChair));
+                    matchList.Add(new match(tableList[i], (int)categoryList[i].CategoryId, (int)tableList[i].NumChair));
                     i++;
                 }
                 //רשימת שולחנות שאין להם קטגוריות
                 List<Table> availableTableList = new List<Table>();
-                while (i < tabelList.Count)
+                while (i < tableList.Count)
                 {
-                    availableTableList.Add(tabelList[i]);
+                    availableTableList.Add(tableList[i]);
                 }
                 ////יתכן ונותרו זנבות אך מקרים אלו יכללו בהמשך
                 for (int j = 0; j < guestList.Count; j++)
@@ -242,26 +242,26 @@ namespace BL
     }
     //            List<Guest> guestListMale = await iguestdl.GetDLOrderByFamilySize(e.Id,1);
     //            List<Guest> guestListFemale = await iguestdl.GetDLOrderByFamilySize(e.Id, 3);
-    //            List<Table> tabelList= await itabeldl.GetTabelByEventIdDL(e.Id);
+    //            List<Table> tableList= await itabledl.GettableByEventIdDL(e.Id);
 
     //              List<CategoryPerEvent> categoryList = await icategorydl.GetCategoryByEventId(e.Id);
 
     //             List<match> matchList = new List<match>(); &&&
 
     //        int i = 0;
-    //            while(i<tabelList.Count && i<categoryList.Count)
+    //            while(i<tableList.Count && i<categoryList.Count)
     //            {
     //                //after update the db we must change this
 
-    //                matchList.Add(new match(tabelList[i], (int) categoryList[i].CategoryId, (int) tabelList[i].NumChair));
+    //                matchList.Add(new match(tableList[i], (int) categoryList[i].CategoryId, (int) tableList[i].NumChair));
     //                i++;
     //            }
 
 
     //    List<Table> availableTableList = new List<Table>();
-    //            while(i<tabelList.Count)
+    //            while(i<tableList.Count)
     //            {
-    //                availableTableList.Add(tabelList[i]);
+    //                availableTableList.Add(tableList[i]);
     //            }
 
 

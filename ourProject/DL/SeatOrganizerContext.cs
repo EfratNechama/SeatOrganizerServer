@@ -106,7 +106,7 @@ namespace DL
 
                 entity.Property(e => e.NumSpecialTableChairsMale).HasColumnName("num_special_table_chairs_male");
 
-                entity.Property(e => e.NumTabelsMale).HasColumnName("num_tabels_male");
+                entity.Property(e => e.NumTablesMale).HasColumnName("num_tables_male");
 
                 entity.Property(e => e.NumTablesFemale).HasColumnName("num_tables_female");
 

@@ -22,6 +22,12 @@ namespace ourProject.Controllers
             this.icategorybl = icategorybl;
 
         }
+        // GET: api/<CategoryController>
+        [HttpGet("{id}")]
+        public async Task<List<Category>> GetCategoryForEvent(int id)
+        {
+            return await icategorybl.GetCategoryForEventBL(id);
+        }
 
         // GET: api/<CategoryController>
         [HttpGet]

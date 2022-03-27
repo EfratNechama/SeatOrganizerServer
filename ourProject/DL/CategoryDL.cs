@@ -19,6 +19,12 @@ namespace DL
 
         //placement
         //לאחר שינוי הקטגוריה בדיבי יש לשים לב להתאים את סוג הליסט וסוג הפרמטר לשליפה
+        public async Task<List<Category>> GetCategoryForEventDL(int id)
+        {
+            List<Category> listCategory = await _myDB.Categories.Where(c => c.EventId == (id)).ToListAsync();
+
+            return listCategory;
+        }
         public async Task<List<CategoryPerEvent>> GetCategoryByEventId(int eventId)
         {
             List<CategoryPerEvent> listCategory = await _myDB.CategoryPerEvents.Where(c => c.EventId==(eventId)).ToListAsync();

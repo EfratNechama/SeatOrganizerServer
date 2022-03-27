@@ -35,10 +35,10 @@ namespace BL
         {
             int id=await ieventdl.PostDL(e);
             List<Table> tblArr = new List<Table>();
-            //Table[] tblArr = new Table[(int)(e.NumTabelsMale+e.NumTablesFemale+2)];
+            //Table[] tblArr = new Table[(int)(e.NumtablesMale+e.NumTablesFemale+2)];
             //int ind = 0;
             //post table by the event details 
-            for (int i = 0; i < e.NumTabelsMale; i++)
+            for (int i = 0; i < e.NumTablesMale; i++)
             {
                 Table t = new Table
                 {Id=0, IsSpecial=false, NumChair=(int)(e.NumChairsMale), EventId=e.Id, GenderId=1};
