@@ -9,6 +9,8 @@ using Entities;
 //using NLog;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,7 +30,25 @@ namespace ourProject.Controllers
             ieventbl = Ieventbl;
             this.imapper = imapper;
         }
-        
+        //POST api/<EventController>
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("{userId}")]
+        public async Task<int> Post(int userId, [FromBody] Event e, [FromForm] IFormFile image)
+        {
+            var folderName = Path.Combine("Resources", "Images", e.Id.ToString());
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            Directory.CreateDirectory(directory);
+            string filePath = Path.Combine(directory, image.FileName);
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                image.CopyTo(fileStream);
+            }
+            e.InvitationImageName = folderName;
+            e.InvitationImagePath = Path.Combine(folderName, image.FileName);
+
+            return await ieventbl.PostBL(e, userId);
+        }
+
         // GET: api/<EventController>
         [HttpGet("{id}")]
         public async Task<Event> Get(int id )
@@ -48,13 +68,13 @@ namespace ourProject.Controllers
 
         
 
-        // POST api/<EventController>
-        [HttpPost()]
-        [Route("{userId}")]
-        public async Task<int> Post( int userId , [FromBody] Event e)
-        { 
-            return await ieventbl.PostBL(e , userId);
-        }
+        //// POST api/<EventController>
+        //[HttpPost()]
+        //[Route("{userId}")]
+        //public async Task<int> Post( int userId , [FromBody] Event e)
+        //{ 
+        //    return await ieventbl.PostBL(e , userId);
+        //}
 
 
         // PUT api/<EventController>/5

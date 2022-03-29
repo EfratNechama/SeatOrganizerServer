@@ -50,7 +50,11 @@ namespace ourProject.Controllers
 
         }
 
-
+        [HttpPut]
+        public async Task Put([FromBody] Guest g)
+        {
+            await iguestbl.sendEmailByGuestId(g);
+        }
         // PUT api/<EventController>/5
         [HttpPut("{id}")]
         public async Task Put(int id, [FromBody] Guest g)

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 #nullable disable
 
-namespace Entities
+namespace ourProject.Models
 {
     public partial class Event
     {
@@ -29,13 +28,10 @@ namespace Entities
         public string InvitationImageName { get; set; }
         public string InvitationImagePath { get; set; }
         public string Name { get; set; }
-        [JsonIgnore]
+
         public virtual ICollection<Category> Categories { get; set; }
-        [JsonIgnore]
         public virtual ICollection<CategoryPerEvent> CategoryPerEvents { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Guest> Guests { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Table> Tables { get; set; }
     }
 }

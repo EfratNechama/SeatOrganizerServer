@@ -1,11 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Entities;
 
 #nullable disable
 
-namespace DL
+namespace ourProject.Models
 {
     public partial class SeatOrganizerContext : DbContext
     {
