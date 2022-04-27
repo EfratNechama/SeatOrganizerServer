@@ -30,25 +30,7 @@ namespace ourProject.Controllers
             ieventbl = Ieventbl;
             this.imapper = imapper;
         }
-        //POST api/<EventController>
-        [HttpPost, DisableRequestSizeLimit]
-        [Route("{userId}")]
-        public async Task<int> Post(int userId, [FromBody] Event e, [FromForm] IFormFile image)
-        {
-            var folderName = Path.Combine("Resources", "Images", e.Id.ToString());
-            var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            Directory.CreateDirectory(directory);
-            string filePath = Path.Combine(directory, image.FileName);
-            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                image.CopyTo(fileStream);
-            }
-            e.InvitationImageName = folderName;
-            e.InvitationImagePath = Path.Combine(folderName, image.FileName);
-
-            return await ieventbl.PostBL(e, userId);
-        }
-
+        
         // GET: api/<EventController>
         [HttpGet("{id}")]
         public async Task<Event> Get(int id )
@@ -66,16 +48,56 @@ namespace ourProject.Controllers
            return eventList;
         }
 
-        
 
-        //// POST api/<EventController>
-        //[HttpPost()]
+
+        // POST api/<EventController>
+        [HttpPost("{userId}")]
         //[Route("{userId}")]
-        //public async Task<int> Post( int userId , [FromBody] Event e)
-        //{ 
-        //    return await ieventbl.PostBL(e , userId);
-        //}
+        public async Task<int> Post(int userId, [FromBody] Event e)
+        {
+            return await ieventbl.PostBL(e, userId);
+        }
 
+
+
+        //POST api/<EventController>
+        [HttpPost("image/{eventId}"), DisableRequestSizeLimit]
+        // [Route("{eventId}")]
+        public async Task Post(int eventId, [FromForm] IFormFile image)
+        {
+            // int eventId= await ieventbl.PostBL(e, userId);
+            var folderName = Path.Combine("Resources", "Images", eventId.ToString());
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            Directory.CreateDirectory(directory);
+            string ImageFullPath = Path.Combine(folderName, image.FileName);
+            string filePath = Path.Combine(directory, image.FileName);
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                image.CopyTo(fileStream);
+            }
+            Event e = await ieventbl.getEventByEventIdBL(eventId);
+            Event newEvent = new Event
+            {
+                Id = eventId,
+                SeparatedSeats = e.SeparatedSeats,
+                NumTablesMale = e.NumTablesMale,
+                NumTablesFemale = e.NumTablesFemale,
+                NumChairsMale = e.NumChairsMale,
+                NumChairsFemale = e.NumChairsFemale,
+                NumSpecialTableChairsMale = e.NumSpecialTableChairsMale,
+                NumSpecialTableChairsFemale = e.NumSpecialTableChairsFemale,
+                EventDate = e.EventDate,
+                InvitationImageName = image.FileName,
+                InvitationImagePath = ImageFullPath,
+                Name = e.Name
+            };
+            await ieventbl.PutBL(eventId, newEvent);
+
+            //e.InvitationImageName = folderName;
+
+
+            //return await ieventbl.PostBL(e, userId);
+        }
 
         // PUT api/<EventController>/5
         [HttpPut("{id}")]

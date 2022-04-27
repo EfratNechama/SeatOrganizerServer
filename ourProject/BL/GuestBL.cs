@@ -14,10 +14,12 @@ namespace BL
     public class GuestBL :IGuestBL
     {
         IGuestDL iguestdl;
+        IEventDL ieventdl;
 
-        public GuestBL(IGuestDL iguestdl)
+        public GuestBL(IGuestDL iguestdl, IEventDL ieventdl)
         {
             this.iguestdl = iguestdl;
+            this.ieventdl = ieventdl;
         }
        
         public async Task<List<Guest>> GetBL(int id)  
@@ -71,6 +73,7 @@ namespace BL
 
         public async Task sendEmailByEventIdBL(int eventId)
         {
+            Event ourEvent = await ieventdl.getEventByEventIdDL(eventId);
 
             List<Guest> guestList = await iguestdl.GetDL(eventId);
             for (int i = 0; i < guestList.Count; i++)
@@ -78,7 +81,8 @@ namespace BL
                 MailMessage message = new MailMessage();
                 message.From = new MailAddress("neproject2@gmail.com");
                 message.To.Add(new MailAddress(guestList[i].Email));
-                message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
+                message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
+               // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
                 string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
                 string link = "<a href= https://material.angular.io > For confirmation of arrival, click here>>  </a>";
                 message.Subject = "Hello "+ guestList[i].FirstName;
@@ -111,13 +115,14 @@ namespace BL
         }
         public async Task sendEmailByGuestId(Guest g)
         {
-
-
+            Event ourEvent = await ieventdl.getEventByEventIdDL(g.EventId);
 
             MailMessage message = new MailMessage();
             message.From = new MailAddress("neproject2@gmail.com");
             message.To.Add(new MailAddress(g.Email));
-            message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
+            message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
+
+            // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
             string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
             string link = "<a href= https://material.angular.io > For confirmation of arrival, click here>>  </a>";
             message.Subject = "Hello " + g.FirstName;
