@@ -14,7 +14,7 @@ namespace BL
         Task sendEmailByEventIdBL(int eventId);
        
         Task sendEmailByGuestId(Guest g);
-
+        Task<Guest> GetGuestByGuestIdBL(int gId);
 
 
     }

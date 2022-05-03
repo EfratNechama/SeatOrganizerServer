@@ -26,6 +26,10 @@ namespace BL
         {
             return await iguestdl.GetDL(id);
         }
+        public async Task<Guest> GetGuestByGuestIdBL(int gId)
+        {
+            return await iguestdl.GetGuestByGuestIdDL(gId);
+        }
         public async Task PostBL(Guest g)
         {
             await iguestdl.PostDL(g);
@@ -84,7 +88,7 @@ namespace BL
                 message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
                // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
                 string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
-                string link = "<a href= https://material.angular.io > For confirmation of arrival, click here>>  </a>";
+                string link = "<a href= http://localhost:4200/#/guest-confirm > For confirmation of arrival, click here>>  </a>";
                 message.Subject = "Hello "+ guestList[i].FirstName;
                 // message.Attachments.Add(new Attachment("M:\\q.jpg"));
 
@@ -120,11 +124,10 @@ namespace BL
             MailMessage message = new MailMessage();
             message.From = new MailAddress("neproject2@gmail.com");
             message.To.Add(new MailAddress(g.Email));
-            message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
-
+            message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));                                                                                                                                                                         
             // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
             string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
-            string link = "<a href= https://material.angular.io > For confirmation of arrival, click here>>  </a>";
+            string link = "<a href= http://localhost:4200/#/guest-confirm > For confirmation of arrival, click here>>  </a>";
             message.Subject = "Hello " + g.FirstName;
             // message.Attachments.Add(new Attachment("M:\\q.jpg"));
 

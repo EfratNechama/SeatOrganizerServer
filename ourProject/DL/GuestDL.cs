@@ -24,7 +24,11 @@ namespace DL
             List<Guest> g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
             return g;
         }
-
+        public async Task<Guest> GetGuestByGuestIdDL(int gId)
+        {
+            Guest g = await _myDB.Guests.FindAsync(gId);
+            return g;
+        }
         //placement
         public async Task<List<Guest>> GetByGenderDL(int id,int gender)
         {

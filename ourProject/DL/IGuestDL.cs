@@ -11,7 +11,7 @@ namespace DL
         Task<List<Guest>> GetByGenderDL(int id, int gender);
         Task PostDL(Guest g);
         Task PutDL(int id, Guest g);
-
+        Task<Guest> GetGuestByGuestIdDL(int gId);
         Task DeleteDL(int id);
     }
 }

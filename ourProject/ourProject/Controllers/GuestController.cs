@@ -24,10 +24,15 @@ namespace ourProject.Controllers
             this.imapper = imapper;
         }
         // GET: api/<EventController>
-        [HttpGet("{EventId}")]
+        [HttpGet("all/{EventId}")]
         public async Task<List<Guest>> Get(int EventId)
         {
             return await iguestbl.GetBL(EventId);
+        }
+        [HttpGet("one/{GuestId}")]
+        public async Task<Guest> Get(int GuestId,int x)
+        {
+            return await iguestbl.GetGuestByGuestIdBL(GuestId);
         }
         ////GET: api/<EventController>
         //[HttpGet("{eventId}")]
@@ -50,7 +55,7 @@ namespace ourProject.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("sendEmail")]
         public async Task Put([FromBody] Guest g)
         {
             await iguestbl.sendEmailByGuestId(g);

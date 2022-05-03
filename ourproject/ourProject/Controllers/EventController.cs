@@ -9,6 +9,8 @@ using Entities;
 //using NLog;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -46,16 +48,56 @@ namespace ourProject.Controllers
            return eventList;
         }
 
-        
+
 
         // POST api/<EventController>
-        [HttpPost()]
-        [Route("{userId}")]
-        public async Task<int> Post( int userId , [FromBody] Event e)
-        { 
-            return await ieventbl.PostBL(e , userId);
+        [HttpPost("{userId}")]
+        //[Route("{userId}")]
+        public async Task<int> Post(int userId, [FromBody] Event e)
+        {
+            return await ieventbl.PostBL(e, userId);
         }
 
+
+
+        //POST api/<EventController>
+        [HttpPost("image/{eventId}"), DisableRequestSizeLimit]
+        // [Route("{eventId}")]
+        public async Task Post(int eventId, [FromForm] IFormFile image)
+        {
+            // int eventId= await ieventbl.PostBL(e, userId);
+            var folderName = Path.Combine("Resources", "Images", eventId.ToString());
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            Directory.CreateDirectory(directory);
+            string ImageFullPath = Path.Combine(folderName, image.FileName);
+            string filePath = Path.Combine(directory, image.FileName);
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                image.CopyTo(fileStream);
+            }
+            Event e = await ieventbl.getEventByEventIdBL(eventId);
+            Event newEvent = new Event
+            {
+                Id = eventId,
+                SeparatedSeats = e.SeparatedSeats,
+                NumTablesMale = e.NumTablesMale,
+                NumTablesFemale = e.NumTablesFemale,
+                NumChairsMale = e.NumChairsMale,
+                NumChairsFemale = e.NumChairsFemale,
+                NumSpecialTableChairsMale = e.NumSpecialTableChairsMale,
+                NumSpecialTableChairsFemale = e.NumSpecialTableChairsFemale,
+                EventDate = e.EventDate,
+                InvitationImageName = image.FileName,
+                InvitationImagePath = ImageFullPath,
+                Name = e.Name
+            };
+            await ieventbl.PutBL(eventId, newEvent);
+
+            //e.InvitationImageName = folderName;
+
+
+            //return await ieventbl.PostBL(e, userId);
+        }
 
         // PUT api/<EventController>/5
         [HttpPut("{id}")]
