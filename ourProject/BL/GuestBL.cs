@@ -88,7 +88,7 @@ namespace BL
                 message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
                // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
                 string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
-                string link = "<a href= http://localhost:4200/#/guest-confirm?id=guestList[i].id > For confirmation of arrival, click here>>  </a>";
+                string link = "<a href= http://localhost:4200/#/guest-confirm/?id=" + guestList[i].Id + " > For confirmation of arrival, click here>>  </a>";
                 message.Subject = "Hello "+ guestList[i].FirstName;
                 // message.Attachments.Add(new Attachment("M:\\q.jpg"));
 
@@ -124,11 +124,11 @@ namespace BL
             MailMessage message = new MailMessage();
             message.From = new MailAddress("neproject2@gmail.com");
             message.To.Add(new MailAddress(g.Email));
-            message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));                                                                                                                                                                         
+            //message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));                                                                                                                                                                         
             // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
             string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
             int id = g.Id;
-            string link = "<a href= http://localhost:4200/#/guest-confirm/id></a>";
+            string link = "<a href= http://localhost:4200/#/guest-confirm/?id="+g.Id+">gjhfjhfh</a>";
             message.Subject = "Hello " + g.FirstName;
             // message.Attachments.Add(new Attachment("M:\\q.jpg"));
 

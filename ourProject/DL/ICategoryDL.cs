@@ -7,7 +7,7 @@ namespace DL
     public interface ICategoryDL
     {
         Task<List<Category>> GetCategoryForEventDL(int id);
-        Task<List<CategoryPerEvent>> GetCategoryByEventId(int eventId);
+        Task<List<Category>> GetCategoryByEventId(int eventId);
         Task<List<Category>> GetAllCategoryDL();
         Task PostDL(Category[] c);
     }

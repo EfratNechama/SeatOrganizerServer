@@ -61,7 +61,7 @@ namespace BL
                 List<Guest> specialGuestList = allGuestsList.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.Category.Name.Equals("special")).ToList();
                 List<Guest> guestList = allGuestsList.OrderByDescending(g => g.NumFamilyMembersMale).Where(g => g.Category.Name != "special").ToList();
                 List<Table> tableList = await itabledl.GetTableByEventIdDL(e.Id, 2, false);
-                List<CategoryPerEvent> categoryList = await icategorydl.GetCategoryByEventId(e.Id);
+                List<Category> categoryList = await icategorydl.GetCategoryByEventId(e.Id);
                 List<match> matchList = new List<match>();
 
 
@@ -103,7 +103,7 @@ namespace BL
                 {
                     //after update the db we must change this
 
-                    matchList.Add(new match(tableList[i], (int)categoryList[i].CategoryId, (int)tableList[i].NumChair));
+                    matchList.Add(new match(tableList[i], (int)categoryList[i].Id, (int)tableList[i].NumChair));
                     i++;
                 }
                 //רשימת שולחנות שאין להם קטגוריות

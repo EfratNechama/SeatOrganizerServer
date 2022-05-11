@@ -45,7 +45,7 @@ namespace DL
             Event e = await _myDB.Events.Where(e => e.Id.Equals(id)).FirstOrDefaultAsync();
             
                 return e;
-             }
+        }
 
         public async Task<int> PostDL(Event e)
         {

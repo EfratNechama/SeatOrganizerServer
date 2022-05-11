@@ -25,9 +25,9 @@ namespace DL
 
             return listCategory;
         }
-        public async Task<List<CategoryPerEvent>> GetCategoryByEventId(int eventId)
+        public async Task<List<Category>> GetCategoryByEventId(int eventId)
         {
-            List<CategoryPerEvent> listCategory = await _myDB.CategoryPerEvents.Where(c => c.EventId==(eventId)).ToListAsync();
+            List<Category> listCategory = await _myDB.Categories.Where(c => c.EventId==(eventId)).ToListAsync();
 
             return listCategory;
         }
@@ -40,8 +40,17 @@ namespace DL
 
         public async Task PostDL(Category[] c)
         {
-            await _myDB.Categories.AddRangeAsync(c);
-            await _myDB.SaveChangesAsync();
+            try
+            {
+                await _myDB.Categories.AddRangeAsync(c);
+                await _myDB.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        
         }
     }
 }

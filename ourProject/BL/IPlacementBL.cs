@@ -6,6 +6,6 @@ namespace BL
 {
     public interface IPlacementBL
     {
-        Task place(Event e);
+        Task place(int eId);
     }
 }
