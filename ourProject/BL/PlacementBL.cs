@@ -251,7 +251,10 @@ namespace BL
             this.icategorydl = icategorydl;
         }
 
-
+        public async Task<List<Table>> getBl(int id)
+        {
+            return await iplacementdl.getDl(id);
+        }
 
         public class match
         {
@@ -314,21 +317,30 @@ namespace BL
                             UserId = guest.UserId,
                             IdentifyName = guest.IdentifyName,
                             IdentifyImage = guest.IdentifyImage,
-                            NumFamilyMembersMale = guest.NumFamilyMembersMale,
+                            //NumFamilyMembersMale = guest.NumFamilyMembersMale,
+                            NumFamilyMembersMale = guest.NumFamilyMembersMale - machedTable.availableChairs,
                             NumFamilyMembersFemale = guest.NumFamilyMembersFemale
                         };
-                        g1.NumFamilyMembersMale = guest.NumFamilyMembersMale - machedTable.availableChairs;
+                        //g1.NumFamilyMembersMale = guest.NumFamilyMembersMale - machedTable.availableChairs;
                         guestList.Add(g1);
                         //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
                         //בעצם אפשר כבר למחוק אותו לא?
                         matchList.Find(u => u.t.Id == machedTable.t.Id).availableChairs = 0;
+
+                        Placement p = new Placement
+                        { Id = 0, TableId = machedTable.t.Id, GuestId = guest.Id, NumMembers = guest.NumFamilyMembersMale-g1.NumFamilyMembersMale };
+                        await iplacementdl.postDL(p);
+
                     }
                     else
+                    { 
                         //חיפוש השולחן ממנו צריך להפחית את מספר הכסאות
                         matchList.Find(u => u.t.Id == machedTable.t.Id).availableChairs -= (int)guest.NumFamilyMembersMale;
-                    Placement p = new Placement
-                    { Id = 0, TableId = machedTable.t.Id, GuestId = guest.Id };
-                    await iplacementdl.postDL(p);
+                        Placement p = new Placement
+                        { Id = 0, TableId = machedTable.t.Id, GuestId = guest.Id, NumMembers=guest.NumFamilyMembersMale };
+                        await iplacementdl.postDL(p);
+
+                    }
 
                 }
 
@@ -338,10 +350,15 @@ namespace BL
                 //לא נכון .COUNT כי צריך לספור את מספר חברי המשפחה (איך להגביל?) לתקן
                 if (specialGuestList.Count <= spicalTableList[0].NumChair)
                 {
-
+                    foreach(Guest g2 in specialGuestList)
+                    {
+                        Placement p = new Placement
+                        { Id = 0, TableId = spicalTableList[0].Id, GuestId = g2.Id,NumMembers=1 };
+                        await iplacementdl.postDL(p);
+                    }
                 }
-                else
-                    throw new Exception("too many spical pepole!");
+                //else
+                //    throw new Exception("too many special pepole!");
 
                 //התאמת שולחנות לקטגוריות לצורך אתחול 
                 int i = 0;

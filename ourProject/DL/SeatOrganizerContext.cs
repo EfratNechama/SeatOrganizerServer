@@ -231,6 +231,8 @@ namespace DL
                 entity.Property(e => e.GuestId).HasColumnName("guest_id");
 
                 entity.Property(e => e.TableId).HasColumnName("table_id");
+                entity.Property(e => e.NumMembers).HasColumnName("num_members");
+
 
                 entity.HasOne(d => d.Guest)
                     .WithMany(p => p.Placements)

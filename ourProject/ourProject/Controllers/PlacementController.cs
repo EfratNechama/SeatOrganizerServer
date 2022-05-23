@@ -25,19 +25,20 @@ namespace ourProject.Controllers
             this.imapper = imapper;
         }
         // GET: api/<ValuesController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
+        [HttpGet()]
+        //public async Task< List<Table>> Get(int eventId)
         //{
-        //    return new string[] { "value1", "value2" };
+        //    return await iplacementbl.getBl(eventId);
         //}
 
         // GET api/<ValuesController>/5
-        [HttpPost("{eventId}")]
-        public async Task Post(int eventId)
+        [HttpPost()]
+        public async Task Post([FromBody]Event eve)
         {
+           
             try
                 {
-                await this.iplacementbl.place(eventId);
+                await this.iplacementbl.place(eve.Id);
                 }
             catch(Exception  e)
             {

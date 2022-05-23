@@ -124,12 +124,20 @@ namespace BL
             MailMessage message = new MailMessage();
             message.From = new MailAddress("neproject2@gmail.com");
             message.To.Add(new MailAddress(g.Email));
-            //message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));                                                                                                                                                                         
+            try
+            {
+                message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
+
+            }
+            catch(Exception e)
+            {
+                int a = 1;
+            }
             // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
-            string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
+            string mailbody = "You are invited to"+ourEvent.Name+"\n";
             int id = g.Id;
-            string link = "<a href= http://localhost:4200/#/guest-confirm/?id="+g.Id+">gjhfjhfh</a>";
-            message.Subject = "Hello " + g.FirstName;
+            string link = "<a href= http://localhost:4200/#/guest-confirm/?id="+g.Id+">Confirm arrival here</a>";
+            message.Subject = "Hi " + g.FirstName;
             // message.Attachments.Add(new Attachment("M:\\q.jpg"));
 
             message.Body = mailbody + link;

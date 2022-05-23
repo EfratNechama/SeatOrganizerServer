@@ -11,6 +11,8 @@ namespace Entities
         public int Id { get; set; }
         public int TableId { get; set; }
         public int? GuestId { get; set; }
+
+        public int? NumMembers { get; set; }
         [JsonIgnore]
         public virtual Guest Guest { get; set; }
         [JsonIgnore]

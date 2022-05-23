@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,14 @@ namespace DL
         {
             _myDB = SeatOrganizerContext;
         }
+        public async Task<List<Table>> getDl(int eventId)
+        {
+            //List<Event> eventlist = await _myDB.EventPerUsers.Include(e => e.Event).Where(u => u.UserId == id).Select(e => e.Event).ToListAsync();
 
+            //List<Table> l=await _myDB.Tables.Include(t=>t.Placements) 
+            List<Table> l=new List<Table>();
+            return l;
+        }
         public async Task postDL(Placement p)
         {
             await _myDB.Placements.AddAsync(p);
