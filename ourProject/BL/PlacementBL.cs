@@ -251,7 +251,7 @@ namespace BL
             this.icategorydl = icategorydl;
         }
 
-        public async Task<List<Table>> getBl(int id)
+        public async Task<List<GuestSeat>> getBl(int id)
         {
             return await iplacementdl.getDl(id);
         }
@@ -279,6 +279,8 @@ namespace BL
         public async Task place(int eId)
         {
             Event e = await this.ieventdl.getEventByEventIdDL(eId);
+            //למחוק את השיבוץ הקודם בישיביל שלא יהיה כפול
+            await this.iplacementdl.deleteDL(eId);
             //לטפל בספיישל
             //לדאוג להסרת השולחנות שהגיעו לתפוסה מלאה (0מקומות זמינים)
 

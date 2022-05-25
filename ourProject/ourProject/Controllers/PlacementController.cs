@@ -21,15 +21,15 @@ namespace ourProject.Controllers
         public PlacementController(IPlacementBL iplacementbl, IMapper imapper)
         {
 
-            this.iplacementbl= iplacementbl;
+            this.iplacementbl = iplacementbl;
             this.imapper = imapper;
         }
         // GET: api/<ValuesController>
-        [HttpGet()]
-        //public async Task< List<Table>> Get(int eventId)
-        //{
-        //    return await iplacementbl.getBl(eventId);
-        //}
+        [HttpGet("{eventId}")]
+        public async Task<List<GuestSeat>> Get(int eventId)
+        {
+            return await iplacementbl.getBl(eventId);
+        }
 
         // GET api/<ValuesController>/5
         [HttpPost()]
