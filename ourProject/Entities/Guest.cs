@@ -26,6 +26,7 @@ namespace Entities
         public byte[] IdentifyImage { get; set; }
         public int? NumFamilyMembersMale { get; set; }
         public int? NumFamilyMembersFemale { get; set; }
+        public string imagePath { get; set; }
         [JsonIgnore]
         public virtual Category Category { get; set; }
         [JsonIgnore]
