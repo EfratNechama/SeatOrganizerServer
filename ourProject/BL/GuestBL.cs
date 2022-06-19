@@ -36,11 +36,7 @@ namespace BL
         }
         public async Task PutBL(int id, Guest g)
         {
-            try { await iguestdl.PutDL(id, g); }
-            catch (Exception e)
-            {
-                var d = 5;
-            }
+            await iguestdl.PutDL(id, g); 
          
         }
 
@@ -49,97 +45,24 @@ namespace BL
             await iguestdl.DeleteDL(id);
         }
 
-        //    public async Task sendMail(int eventId)
-        //    {
-        //       string name = "email" xsi: type = "Mail"
-
-        //subject = "Sent From The Logger!"
-
-        //to = "324861285@mby.co.il"
-
-        //from = "siteloggermail@gmail.com"
-
-        //body = "${message}${newline}"
-
-        //smtpUserName = "siteloggermail@gmail.com"
-
-        //smtpAuthentication = "Basic"
-
-        //secureSocketOption = "SslOnConnect"
-
-        //enableSsl = "true"
-
-        //smtpPassword = "lovewebapi"
-
-        //smtpServer = "smtp.gmail.com"
-
-        //smtpPort = "587"
-
-        public async Task sendEmailByEventIdBL(int eventId)
+        public void sendEmail(Guest g,Event e)
         {
-            Event ourEvent = await ieventdl.getEventByEventIdDL(eventId);
-
-            List<Guest> guestList = await iguestdl.GetDL(eventId);
-            for (int i = 0; i < guestList.Count; i++)
-            {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress("neproject2@gmail.com");
-                message.To.Add(new MailAddress(guestList[i].Email));
-                message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
-               // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
-                string mailbody = "You are invited to a big party!!!!!!!!!!!!!!!!!!!!!! \n";
-                string link = "<a href= http://localhost:4200/#/guest-confirm/?id=" + guestList[i].Id + " > For confirmation of arrival, click here>>  </a>";
-                message.Subject = "Hello "+ guestList[i].FirstName;
-                // message.Attachments.Add(new Attachment("M:\\q.jpg"));
-
-                message.Body = mailbody + link;
-                message.BodyEncoding = Encoding.UTF8;
-                message.IsBodyHtml = true;
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
-                System.Net.NetworkCredential basicCredential1 = new
-                System.Net.NetworkCredential("neproject2@gmail.com", "35363536");
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                client.Credentials = basicCredential1;
-
-
-                try
-                {
-                    client.Send(message);
-                }
-
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-
-
-
-        }
-        public async Task sendEmailByGuestId(Guest g)
-        {
-            Event ourEvent = await ieventdl.getEventByEventIdDL(g.EventId);
-
             MailMessage message = new MailMessage();
             message.From = new MailAddress("neproject2@gmail.com");
             message.To.Add(new MailAddress(g.Email));
             try
             {
-                message.Attachments.Add(new Attachment(ourEvent.InvitationImagePath));
+                message.Attachments.Add(new Attachment(e.InvitationImagePath));
 
             }
-            catch(Exception e)
+            catch (Exception e1)
             {
                 int a = 1;
             }
-            // message.Attachments.Add(new Attachment("M:\\פרויקט גמר\\q.jpg"));
-            string mailbody = "You are invited to"+ourEvent.Name+"\n";
+            string mailbody = "You are invited to" + e.Name + "\n";
             int id = g.Id;
-            string link = "<a href= http://localhost:4200/#/guest-confirm/?id="+g.Id+">Confirm arrival here</a>";
+            string link = "<a href= http://localhost:4200/#/guest-confirm/?id=" + g.Id + ">Confirm arrival here</a>";
             message.Subject = "Hi " + g.FirstName;
-            // message.Attachments.Add(new Attachment("M:\\q.jpg"));
-
             message.Body = mailbody + link;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;
@@ -149,8 +72,6 @@ namespace BL
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
             client.Credentials = basicCredential1;
-
-
             try
             {
                 client.Send(message);
@@ -160,6 +81,24 @@ namespace BL
             {
                 throw ex;
             }
+        }
+        public async Task sendEmailByEventIdBL(int eventId)
+        {
+            Event ourEvent = await ieventdl.getEventByEventIdDL(eventId);
+
+            List<Guest> guestList = await iguestdl.GetDL(eventId);
+            for (int i = 0; i < guestList.Count; i++)
+            {
+                sendEmail(guestList[i], ourEvent);
+            }
+
+
+
+        }
+        public async Task sendEmailByGuestId(Guest g)
+        {
+            Event ourEvent = await ieventdl.getEventByEventIdDL(g.EventId);
+            sendEmail(g, ourEvent);
         }
 
 

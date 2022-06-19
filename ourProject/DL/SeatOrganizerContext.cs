@@ -197,6 +197,7 @@ namespace DL
 
                 entity.Property(e => e.NumFamilyMembersMale).HasColumnName("num_family_members_male");
                 entity.Property(e => e.imagePath).HasColumnName("image_path");
+                entity.Property(e => e.DataUrl).HasColumnName("data_url");
                 entity.Property(e => e.Phone)
                     .HasMaxLength(10)
                     .HasColumnName("phone")

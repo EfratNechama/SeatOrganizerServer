@@ -66,19 +66,12 @@ namespace DL
         public async Task PutDL(int id, Guest g)
         {
             Guest guestToUpdate = await _myDB.Guests.FindAsync(id);
-            if (guestToUpdate == null)
+            if (guestToUpdate != null)
             {
-                return;
+                _myDB.Entry(guestToUpdate).CurrentValues.SetValues(g);
+                await _myDB.SaveChangesAsync();
             }
-            _myDB.Entry(guestToUpdate).CurrentValues.SetValues(g);
-
-
-            try { await _myDB.SaveChangesAsync(); }
-            catch (Exception e)
-            {
-                var d = 5;
-            }
-            
+            return;
         }
 
         public async Task DeleteDL(int id)

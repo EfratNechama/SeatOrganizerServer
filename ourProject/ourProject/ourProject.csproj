@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Resources\GuestFaces\153\" />
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\GuestFaces\" />
     <Folder Include="wwwroot\" />
