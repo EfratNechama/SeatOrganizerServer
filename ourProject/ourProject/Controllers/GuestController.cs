@@ -35,6 +35,7 @@ namespace ourProject.Controllers
         {
             return await iguestbl.GetBL(EventId);
         }
+
         [HttpGet("one/{GuestId}")]
         public async Task<Guest> Get(int GuestId, int x)
         {
@@ -52,19 +53,34 @@ namespace ourProject.Controllers
         [HttpPost("{sendEmail}")]
         public async Task Post(bool sendEmail, [FromBody] Guest g)
         {
-
+            try { 
             await iguestbl.PostBL(g);
             if (sendEmail)
             {
                 await iguestbl.sendEmailByGuestId(g);
             }
-
+}
+            catch(Exception e)
+            {
+                var x = 4;
+            }
         }
 
         [HttpPut("sendEmail")]
         public async Task Put([FromBody] Guest g)
         {
             await iguestbl.sendEmailByGuestId(g);
+        }
+        [HttpPut("sendEmailToAll")]
+        public async Task Put(int EventId)
+        {
+            List<Guest> l =await iguestbl.GetBL(EventId);
+            for(int i=0; i<l.Count; i++)
+            {
+                await iguestbl.sendEmailByGuestId(l[i]);
+
+            }
+            return;
         }
         // PUT api/<EventController>/5
         //[HttpPut("image/{id}"), DisableRequestSizeLimit]

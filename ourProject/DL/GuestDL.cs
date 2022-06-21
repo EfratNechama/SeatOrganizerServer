@@ -21,7 +21,16 @@ namespace DL
 
         public async Task<List<Guest>> GetDL(int id)
         {
-            List<Guest> g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
+            List<Guest> g= new List<Guest>();
+            try
+            {
+                 g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
+               
+            }
+         catch(Exception e)
+            {
+                var x = 5;
+            }
             return g;
         }
         public async Task<Guest> GetGuestByGuestIdDL(int gId)
@@ -76,10 +85,19 @@ namespace DL
 
         public async Task DeleteDL(int id)
         {
+            try
+            {
+
+           
             Guest g = await _myDB.Guests.FindAsync(id);
             _myDB.Guests.Remove(g);
             await _myDB.SaveChangesAsync();
-        }
+        } 
+            catch(Exception e)
+            {
+                var x = 5;
+            }
+            }
 
         //public async Task sendMailDl
 
