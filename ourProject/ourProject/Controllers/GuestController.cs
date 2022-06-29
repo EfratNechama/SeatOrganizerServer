@@ -71,10 +71,10 @@ namespace ourProject.Controllers
         {
             await iguestbl.sendEmailByGuestId(g);
         }
-        [HttpPut("sendEmailToAll")]
-        public async Task Put(int EventId)
+        [HttpDelete("sendEmailToAll/{eventId}")]
+        public async Task Delete(int eventId)
         {
-            List<Guest> l =await iguestbl.GetBL(EventId);
+            List<Guest> l =await iguestbl.GetBL(eventId);
             for(int i=0; i<l.Count; i++)
             {
                 await iguestbl.sendEmailByGuestId(l[i]);

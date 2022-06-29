@@ -66,7 +66,8 @@ namespace BL
             message.Body = mailbody + link;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp
+            client.Timeout = Int32.MaxValue;
             System.Net.NetworkCredential basicCredential1 = new
             System.Net.NetworkCredential("neproject2@gmail.com", "wjufhbicsrzjyful");
             client.EnableSsl = true;
