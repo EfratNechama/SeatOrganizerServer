@@ -15,11 +15,22 @@ namespace ourProject.Controllers
     [ApiController]
     public class FaceRecognitionController : ControllerBase
     {
-        // GET: api/<ValuesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+  
+        [HttpPost]
+        public void Post(string img,int eventId)
         {
-            return new string[] { "value1", "value2" };
+            img =img.Replace("data:image/jpeg;base64,", "");
+            byte[] bytes = Convert.FromBase64String(img);
+            var folderName = Path.Combine("Resources", "Test");
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            Directory.CreateDirectory(directory);
+            string ImageFullPath = Path.Combine(folderName, eventId.ToString() + ".jpg");
+            System.IO.File.WriteAllBytes(ImageFullPath, bytes);
+            string trainPath = "C:\\Users\\1\\Desktop\\אפרת לימודים 2022\\פרויקט גמר\\projectServer\\ourProject\\ourProject\\Resources\\GuestFaces\\"+eventId;
+            string testPath = ImageFullPath;
+
+
+
         }
 
         // GET api/<ValuesController>/5
@@ -35,40 +46,40 @@ namespace ourProject.Controllers
 
 
 
-        // POST api/<ValuesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-            //using WebRequest
-            WebRequest request;
-            request = WebRequest.Create("http://127.0.0.1:9007/my_face_recognition/do_POST");
+        //// POST api/<ValuesController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //    //using WebRequest
+        //    WebRequest request;
+        //    request = WebRequest.Create("http://127.0.0.1:9007/my_face_recognition/do_POST");
 
-            //
-            request.ContentType = "application/json";
-            request.Method = "POST";
+        //    //
+        //    request.ContentType = "application/json";
+        //    request.Method = "POST";
 
-            string responseFromServer = string.Empty;
-            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-            {
-                string json = JsonSerializer.Serialize("311");
+        //    string responseFromServer = string.Empty;
+        //    using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+        //    {
+        //        string json = JsonSerializer.Serialize("311");
 
-                streamWriter.Write(json);
-            }
-            WebResponse response = request.GetResponse();
-            using (Stream dataStream = response.GetResponseStream())
-            {
-                // Open the stream using a StreamReader for easy access.
-                StreamReader reader = new StreamReader(dataStream);
-                // Read the content.
-                reader.ToString();
-                responseFromServer = reader.ReadToEnd();
-                // Display the content.
-                Console.WriteLine(responseFromServer);
+        //        streamWriter.Write(json);
+        //    }
+        //    WebResponse response = request.GetResponse();
+        //    using (Stream dataStream = response.GetResponseStream())
+        //    {
+        //        // Open the stream using a StreamReader for easy access.
+        //        StreamReader reader = new StreamReader(dataStream);
+        //        // Read the content.
+        //        reader.ToString();
+        //        responseFromServer = reader.ReadToEnd();
+        //        // Display the content.
+        //        Console.WriteLine(responseFromServer);
 
-            }
-            //טיפול בתשובה שחזרה מהשרת
-            response.Close();
-        }
+        //    }
+        //    //טיפול בתשובה שחזרה מהשרת
+        //    response.Close();
+        //}
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]

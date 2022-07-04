@@ -21,6 +21,7 @@
     <Folder Include="Resources\GuestFaces\153\" />
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\GuestFaces\" />
+    <Folder Include="Resources\Test\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
