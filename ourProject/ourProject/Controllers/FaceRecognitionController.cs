@@ -15,20 +15,42 @@ namespace ourProject.Controllers
     [ApiController]
     public class FaceRecognitionController : ControllerBase
     {
-  
-        [HttpPost]
-        public void Post(string img,int eventId)
-        {
-            img =img.Replace("data:image/jpeg;base64,", "");
-            byte[] bytes = Convert.FromBase64String(img);
-            var folderName = Path.Combine("Resources", "Test");
-            var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            Directory.CreateDirectory(directory);
-            string ImageFullPath = Path.Combine(folderName, eventId.ToString() + ".jpg");
-            System.IO.File.WriteAllBytes(ImageFullPath, bytes);
-            string trainPath = "C:\\Users\\1\\Desktop\\אפרת לימודים 2022\\פרויקט גמר\\projectServer\\ourProject\\ourProject\\Resources\\GuestFaces\\"+eventId;
-            string testPath = ImageFullPath;
 
+        [HttpPost]
+        public string Post(int eventId)
+        {
+            //string img,
+            //img =img.Replace("data:image/jpeg;base64,", "");
+            //byte[] bytes = Convert.FromBase64String(img);
+            //var folderName = Path.Combine("Resources", "Test");
+            //var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            //Directory.CreateDirectory(directory);
+            //string ImageFullPath = Path.Combine(folderName, eventId.ToString() + ".jpg");
+            //System.IO.File.WriteAllBytes(ImageFullPath, bytes);
+            string trainPath = "C:\\Users\\1\\Desktop\\אפרת לימודים 2022\\פרויקט גמר\\projectServer\\ourProject\\ourProject\\Resources\\GuestFaces\\" + eventId;
+            //string testPath = "C:\\Users\\1\\Desktop\\אפרת לימודים 2022\\פרויקט גמר\\projectServer\\ourProject\\ourProject\\" + ImageFullPath;
+            string testPath = "C:\\Users\\1\\Desktop\\אפרת לימודים 2022\\פרויקט גמר\\projectServer\\ourProject\\ourProject\\Resources\\Test\\125.jpg";
+            ////התחברות לשרת פייתון
+            WebRequest request;
+            string str = "from c#";
+            string queryStr = "train=" + trainPath + "&test=" + testPath;
+            request = WebRequest.Create("http://127.0.0.1:9007/sentiment?"+queryStr);
+              
+            WebResponse response = request.GetResponse();
+            string responseFromServer = string.Empty;
+            using (Stream dataStream = response.GetResponseStream())
+            {
+                // Open the stream using a StreamReader for easy access.
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content.
+                responseFromServer = reader.ReadToEnd();
+                // Display the content.
+                Console.WriteLine(responseFromServer);
+
+            }
+            //טיפול בתשובה שחזרה מהשרת
+            response.Close();
+            return responseFromServer;
 
 
         }
