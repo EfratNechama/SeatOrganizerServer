@@ -27,9 +27,9 @@ namespace ourProject.Controllers
             //Directory.CreateDirectory(directory);
             //string ImageFullPath = Path.Combine(folderName, eventId.ToString() + ".jpg");
             //System.IO.File.WriteAllBytes(ImageFullPath, bytes);
-            string trainPath = "C:\\פרוייקט גמר\\project20_6\\ourProject\\ourProject\\Resources\\GuestFaces" + eventId;
+            string trainPath = "C:\\!finalProject\\project20_6\\ourProject\\ourProject\\Resources\\GuestFaces\\" + eventId;
             //string testPath = "C:\\Users\\1\\Desktop\\אפרת לימודים 2022\\פרויקט גמר\\projectServer\\ourProject\\ourProject\\" + ImageFullPath;
-            string testPath = "C:\\פרוייקט גמר\\project20_6\\ourProject\\ourProject\\Resources\\Test\\125.jpg";
+            string testPath = "C:\\!finalProject\\project20_6\\ourProject\\ourProject\\Resources\\Test\\125.jpg";
             ////התחברות לשרת פייתון
             WebRequest request;
             string str = "from c#";
