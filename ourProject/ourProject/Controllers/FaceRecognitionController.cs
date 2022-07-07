@@ -46,6 +46,8 @@ namespace ourProject.Controllers
                 responseFromServer = reader.ReadToEnd();
                 // Display the content.
                 Console.WriteLine(responseFromServer);
+                string[] responsearr = responseFromServer.Split("\n");
+                int guestId = Int32.Parse(responsearr.LastOrDefault());
 
             }
             //טיפול בתשובה שחזרה מהשרת
