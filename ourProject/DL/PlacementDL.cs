@@ -34,6 +34,12 @@ namespace DL
 
 
         }
+        public async Task<List<Placement>> getPlacementByGuestIdDl(int guestId)
+        {
+            List<Placement> placementList = await _myDB.Placements.Where(p => p.GuestId == (guestId)).ToListAsync();
+
+            return placementList;
+        }
         public async Task postDL(Placement p)
         {
             await _myDB.Placements.AddAsync(p);
