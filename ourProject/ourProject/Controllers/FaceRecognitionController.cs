@@ -26,21 +26,21 @@ namespace ourProject.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<RecognizedGuest> Post(int eventId , string img)
+        [HttpPost("{eventId}")]
+        public async Task<RecognizedGuest> Post(int eventId , [FromBody]ImgDataUrl img)
         {
     
-        string startupPath = System.IO.Directory.GetCurrentDirectory();
-
-            img = img.Replace("data:image/jpeg;base64,", "");
-            byte[] bytes = Convert.FromBase64String(img);
+            string startupPath = System.IO.Directory.GetCurrentDirectory();
+            string image = img.DataUrl;
+            string im = image.Replace("data:image/jpeg;base64,", "");
+            byte[] bytes = Convert.FromBase64String(im);
             var folderName = Path.Combine("Resources", "Test");
             var directory = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             Directory.CreateDirectory(directory);
             string ImageFullPath = Path.Combine(folderName, eventId.ToString() + ".jpg");
             System.IO.File.WriteAllBytes(ImageFullPath, bytes);
             string trainPath = startupPath+"\\Resources\\GuestFaces\\" + eventId;
-            string testPath =startupPath + ImageFullPath;
+            string testPath =startupPath +"\\"+ ImageFullPath;
             string queryStr = "train=" + trainPath + "&test=" + testPath;
             RecognizedGuest rg = await ifacerecognitionbl.postBl(queryStr, eventId);
             return rg;

@@ -44,6 +44,7 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+                
             .AddJwtBearer(x =>
             {
 
@@ -55,6 +56,17 @@ namespace ourProject//Hi Efrat! hope we'll have good luck in this project
                     ValidateAudience = false
                 };
             });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy", //give it the name you want
+            //                  builder =>
+            //                  {
+            //                      builder.WithOrigins("http://localhost:4200",
+            //                                           "production web site")
+            //                                          .AllowAnyHeader()
+            //                                          .AllowAnyMethod();
+            //                  });
+            //});
             object p = services.AddDbContext<SeatOrganizerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SeatOrganizer")));
             services.AddScoped<IUserDL, UserDL>();
             services.AddScoped<IUserBL, UserBL>();

@@ -37,7 +37,7 @@ namespace BL
             for (int i = 0; i < placementList.Count();i++)
             {
                 countList.Add((int)placementList[i].NumMembers);
-                countList.Add(placementList[i].TableId);
+                tableIdList.Add(placementList[i].TableId);
             }
             return new RecognizedGuest { GuestId = g.Id, GuestName = g.FirstName + " " + g.LastName, TableIdList = tableIdList, NumChairsList = countList };
             
