@@ -36,6 +36,7 @@ namespace DL
         public async Task<Guest> GetGuestByGuestIdDL(int gId)
         {
             Guest g = await _myDB.Guests.FindAsync(gId);
+            
             return g;
         }
         //placement
@@ -45,15 +46,15 @@ namespace DL
           //1=male 2=not separated 3=female
             if (gender==1)
             { 
-                g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
+                g = await _myDB.Guests.Where(g => g.EventId == id && g.Confirmed==true).ToListAsync();
             }
             if (gender == 3)
             {
-                g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
+                g = await _myDB.Guests.Where(g => g.EventId == id && g.Confirmed == true).ToListAsync();
             }
             if (gender == 2)
             {
-                g = await _myDB.Guests.Where(g => g.EventId == id).ToListAsync();
+                g = await _myDB.Guests.Where(g => g.EventId == id && g.Confirmed == true).ToListAsync();
             }
             return g;
         }

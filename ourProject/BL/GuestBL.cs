@@ -61,9 +61,9 @@ namespace BL
             }
             string mailbody = "You are invited to" + e.Name + "\n";
             int id = g.Id;
-            string link = "<a href= https://www.diginet.co.il/  > Confirm arrival here</a>";
+            //?    string link = "<a href= https://www.diginet.co.il/  > Confirm arrival here</a>";
 
-            //string link = "<a href= http://localhost:4200/#/guest-confirm/?id=" + g.Id + ">Confirm arrival here</a>";
+            string link = "<a href= http://localhost:4200/#/guest-confirm/?id=" + g.Id + ">Confirm arrival here</a>";
             message.Subject = "Hi " + g.FirstName;
             message.Body = mailbody + link;
             message.BodyEncoding = Encoding.UTF8;
